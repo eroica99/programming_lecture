@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅰ-1. 프로그래밍 언어 | 프로그래밍(파이썬) 학습자료</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Malgun Gothic', '맑은 고딕', Apple SD Gothic Neo, sans-serif; font-size: 15px; line-height: 1.75; color: #1a1a1a; background: #f8f8f6; }
+  .top-bar { background: #1a1a1a; color: #fff; font-size: 12px; letter-spacing: .06em; padding: 8px 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .top-bar .grade { color: #aaa; }
+  .container { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .unit-header { border-bottom: 2.5px solid #1a1a1a; padding-bottom: .85rem; margin-bottom: 1.5rem; }
+  .breadcrumb { font-size: 12px; color: #666; margin-bottom: .35rem; letter-spacing: .03em; }
+  .unit-title { font-size: 24px; font-weight: 700; letter-spacing: -.01em; }
+  .page-range-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+  .page-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 3px 10px; border-radius: 3px; border: 1px solid #ccc; color: #555; background: #fff; }
+  .achievement { background: #fff; border-left: 4px solid #1a1a1a; padding: .85rem 1.1rem; margin-bottom: 2rem; font-size: 13.5px; border-radius: 0 4px 4px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .achievement-label { font-size: 10.5px; font-weight: 700; color: #888; letter-spacing: .1em; margin-bottom: .3rem; }
+  .section { margin-bottom: 2.5rem; }
+  .section-header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.1rem; gap: .75rem; flex-wrap: wrap; }
+  .section-title { font-size: 17px; font-weight: 700; }
+  .section-pages { font-size: 11.5px; color: #777; white-space: nowrap; flex-shrink: 0; border: 1px solid #ddd; padding: 2px 8px; border-radius: 3px; background: #fff; }
+  .subsection { margin-bottom: 1.75rem; }
+  .subsection-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: .65rem; gap: .5rem; }
+  .subsection-title { font-size: 13.5px; font-weight: 700; color: #444; letter-spacing: .03em; }
+  .sub-pages { font-size: 11px; color: #999; white-space: nowrap; }
+  .def-box { border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; margin: .6rem 0; background: #fff; font-size: 14px; }
+  .def-box .term { font-weight: 700; margin-bottom: .25rem; color: #1a1a1a; font-size: 14.5px; }
+  .def-box .desc { color: #333; line-height: 1.8; }
+  .def-box .sub { font-size: 12.5px; color: #888; margin-top: .35rem; }
+  .list-item { border: 1px solid #ddd; border-radius: 5px; background: #fff; padding: .9rem 1.1rem; margin-bottom: .65rem; }
+  .list-item-title { font-size: 14.5px; font-weight: 700; margin-bottom: .5rem; color: #1a1a1a; }
+  .list-item-body { font-size: 13.5px; color: #333; line-height: 1.85; }
+  .list-item-body p { margin-bottom: .4rem; }
+  .list-item-body p:last-child { margin-bottom: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: .75rem 0; background: #fff; }
+  th { background: #f0f0ee; font-weight: 700; padding: .6rem .85rem; border: 1px solid #ccc; text-align: left; }
+  td { padding: .55rem .85rem; border: 1px solid #ddd; vertical-align: top; line-height: 1.75; }
+  td.label-cell { font-weight: 700; white-space: nowrap; background: #fafafa; }
+  td.center { text-align: center; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 3px; font-weight: 700; }
+  .tag-o { background: #e8f5e9; color: #2e7d32; }
+  .tag-x { background: #f5f5f5; color: #888; }
+  /* 언어 진화 흐름 */
+  .evo-flow { display: flex; align-items: stretch; gap: 0; margin: .85rem 0; flex-wrap: nowrap; overflow-x: auto; }
+  .evo-box { flex: 1; min-width: 130px; border: 1px solid #ccc; padding: .75rem .9rem; background: #fff; text-align: center; }
+  .evo-box:first-child { border-radius: 5px 0 0 5px; }
+  .evo-box:last-child { border-radius: 0 5px 5px 0; }
+  .evo-box .evo-gen { font-size: 10.5px; color: #888; margin-bottom: .2rem; letter-spacing: .04em; }
+  .evo-box .evo-name { font-size: 14px; font-weight: 700; margin-bottom: .3rem; }
+  .evo-box .evo-ex { font-size: 11.5px; color: #555; line-height: 1.5; }
+  .evo-box.evo-1 { background: #f4f4f2; }
+  .evo-box.evo-2 { background: #f0f4ff; }
+  .evo-box.evo-3 { background: #e8f5e9; }
+  .evo-arr { display: flex; align-items: center; padding: 0 4px; color: #bbb; font-size: 18px; flex-shrink: 0; }
+  /* 언어 카드 그리드 */
+  .lang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .65rem; margin: .75rem 0; }
+  .lang-card { border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1rem; background: #fff; }
+  .lang-card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .2rem; }
+  .lang-name { font-weight: 700; font-size: 15px; }
+  .lang-page { font-size: 10.5px; color: #aaa; }
+  .lang-year { font-size: 11px; color: #888; margin-bottom: .45rem; }
+  .lang-feature { font-size: 12.5px; line-height: 1.7; color: #333; }
+  .lang-feature strong { color: #1a1a1a; }
+  /* 보충 설명 박스 */
+  .supplement-box { background: #f8f8f6; border: 1px solid #e0e0e0; border-left: 3px solid #888; border-radius: 0 5px 5px 0; padding: .75rem 1rem; margin: .65rem 0; font-size: 13.5px; color: #333; line-height: 1.8; }
+  .supplement-label { font-size: 10.5px; font-weight: 700; color: #888; letter-spacing: .1em; margin-bottom: .3rem; }
+  .divider { border: none; border-top: 1px solid #ddd; margin: 2rem 0; }
+  code { font-family: 'Consolas', 'D2Coding', monospace; background: #f0f0ee; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+  .quiz-section { margin-top: 2rem; }
+  .quiz-title { font-size: 17px; font-weight: 700; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.2rem; }
+  .quiz-item { border: 1px solid #ddd; border-radius: 6px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; background: #fff; }
+  .quiz-num { font-size: 11px; font-weight: 700; color: #888; margin-bottom: .5rem; letter-spacing: .06em; }
+  .quiz-q { font-size: 14px; margin-bottom: .85rem; font-weight: 700; color: #1a1a1a; }
+  .quiz-opts { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .8rem; }
+  .quiz-opt { font-size: 13.5px; padding: .4rem .7rem; border-radius: 4px; border: 1px solid #e0e0e0; background: #fafafa; color: #333; }
+  .quiz-sub-text { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #fafafa; color: #333; line-height: 1.75; }
+  .quiz-inputs { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .85rem; font-size: 13.5px; color: #333; }
+  .blank-input { border: 1px solid #ccc; border-radius: 4px; padding: .3rem .65rem; font-size: 13.5px; min-width: 110px; font-family: inherit; color: #1a1a1a; background: #fff; }
+  .blank-input:focus { outline: 2px solid #1a1a1a; outline-offset: 1px; }
+  .blank-input-wide { min-width: 200px; }
+  .ans-btn { font-size: 12.5px; padding: .38rem 1rem; border-radius: 4px; border: 1px solid #bbb; background: #fff; cursor: pointer; color: #555; font-family: inherit; }
+  .ans-btn:hover { background: #f0f0ee; }
+  .answer-box { display: none; margin-top: .8rem; padding: .75rem 1rem; border-radius: 4px; font-size: 13.5px; border: 1px solid #ccc; background: #f8f8f6; color: #333; line-height: 1.85; }
+  .answer-box.show { display: block; }
+  .ans-label { font-weight: 700; margin-bottom: .3rem; color: #1a1a1a; }
+  .ans-ref { font-size: 11.5px; color: #888; margin-bottom: .4rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 11.5px; color: #aaa; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .top-bar { display: none; }
+    .container { padding: 1rem; }
+    .ans-btn { display: none; }
+    .answer-box { display: block !important; border: 1px solid #ccc; }
+    .blank-input { border-bottom: 1px solid #999; border-top: none; border-left: none; border-right: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <span style="font-weight:600">프로그래밍(파이썬) · 학습자료</span>
+  <span class="grade">고등학교 2학년</span>
+</div>
+<div class="container">
+
+  <div class="unit-header">
+    <div class="breadcrumb">Ⅰ. 프로그래밍의 개요 &gt; 중단원 1</div>
+    <div class="unit-title">프로그래밍 언어</div>
+    <div class="page-range-bar">
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        교과서 pp.12–20
+      </span>
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        개념: pp.13–15 &nbsp;·&nbsp; 언어 종류: pp.16–20 &nbsp;·&nbsp; 읽기 자료: p.29
+      </span>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-label">성취기준</div>
+    <p><strong>[프그 01-01]</strong> 각종 프로그래밍 언어의 종류와 특징을 이해하고, 개발 분야와 용도에 따라 적절한 프로그래밍 언어를 선택할 수 있다.</p>
+  </div>
+
+  <!-- ══ 섹션 1. 프로그래밍 언어의 개념 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">1. 프로그래밍 언어의 개념</div>
+      <span class="section-pages">교과서 pp.13–15</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">프로그래밍과 프로그래밍 언어</div>
+        <span class="sub-pages">p.13</span>
+      </div>
+      <div class="def-box">
+        <div class="term">프로그래밍</div>
+        <div class="desc">컴퓨터 프로그램을 만드는 작업. 프로그래밍 언어는 이 작업의 수단이 된다.</div>
+      </div>
+      <div class="def-box">
+        <div class="term">프로그램</div>
+        <div class="desc">사람이 원하는 작업을 컴퓨터가 수행하도록 <strong>명확하고 구체적인 실행 명령을 순서대로 나열</strong>한 것이다. 프로그램을 만드는 코드를 <strong>소스 코드(source code)</strong>라고 부른다.</div>
+      </div>
+      <div class="def-box">
+        <div class="term">프로그래밍 언어</div>
+        <div class="desc">컴퓨터가 실행해야 할 작업을 표현하는 특별한 언어이다. <strong>제한된 기호와 단어</strong>를 사용하므로 정확한 형식에 맞게 논리적으로 작성해야 한다.</div>
+      </div>
+
+      <table style="margin-top:.65rem">
+        <tr><th>구분</th><th>자연어</th><th>프로그래밍 언어</th></tr>
+        <tr><td class="label-cell">형식</td><td>비형식적 사용 가능</td><td>정확한 형식 필수</td></tr>
+        <tr><td class="label-cell">특징</td><td>맥락적 의미, 비논리적 표현 포함 가능</td><td>논리적, 정형화된 기호·단어만 사용</td></tr>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">프로그래밍 방식의 분류</div>
+        <span class="sub-pages">pp.14–15</span>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">절차적 프로그래밍 (Procedural Programming)</div>
+        <div class="list-item-body">
+          <p>실행해야 할 명령이나 함수를 <strong>순서대로 불러 실행</strong>하는 방식이다. 변수, 데이터 구조, 함수 등으로 나누어 프로그램을 작성하는 것이 중심이 된다.</p>
+          <p style="font-size:12.5px;color:#555">지원 언어(예): Fortran, ALGOL, COBOL, BASIC, Pascal, <strong>C</strong></p>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">객체 지향 프로그래밍 (Object-Oriented Programming)</div>
+        <div class="list-item-body">
+          <p>데이터와 코드를 포함하는 <strong>객체(object)를 중심</strong>으로 프로그램을 설계·작성하는 방식이다. 객체들 사이의 <strong>상호 작용과 변화</strong>를 중심으로 이루어진다.</p>
+          <p>캡슐화, 상속, 다형성 등의 특징 덕분에 코드 재사용이 편리하여 복잡한 프로그램을 효율적으로 개발할 수 있다.</p>
+          <p style="font-size:12.5px;color:#555">지원 언어(예): <strong>C++, C#, Java, Python</strong> (C는 객체 지향 불가)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 섹션 2. 프로그래밍 언어의 발전 단계 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">2. 프로그래밍 언어의 발전 단계</div>
+      <span class="section-pages">교과서 p.29 읽기 자료 + 보충</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">언어의 세대별 진화</div>
+        <span class="sub-pages">p.29 읽기 자료</span>
+      </div>
+
+      <div class="evo-flow">
+        <div class="evo-box evo-1">
+          <div class="evo-gen">1세대</div>
+          <div class="evo-name">기계어</div>
+          <div class="evo-ex">0과 1의 2진수<br>컴퓨터 직접 실행</div>
+        </div>
+        <div class="evo-arr">→</div>
+        <div class="evo-box evo-2">
+          <div class="evo-gen">2세대</div>
+          <div class="evo-name">어셈블리어</div>
+          <div class="evo-ex">기계어와 1:1 대응<br>기호(mnemonic) 사용</div>
+        </div>
+        <div class="evo-arr">→</div>
+        <div class="evo-box evo-3">
+          <div class="evo-gen">3세대 이상</div>
+          <div class="evo-name">고급 언어</div>
+          <div class="evo-ex">인간의 언어에 가까움<br>C, Java, Python 등</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">저급 언어 (Low-Level Language)</div>
+        <span class="sub-pages">p.29 읽기 자료 + 보충</span>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">① 기계어 (Machine Language) — 1세대</div>
+        <div class="list-item-body">
+          <p>컴퓨터가 직접 이해하고 실행할 수 있는 언어이다. <strong>0과 1(2진수)</strong> 형태로 표현한다. 컴퓨터 하드웨어에는 가장 직관적이지만 인간이 이해하고 작성하기 매우 어렵다.</p>
+          <p><strong>특징:</strong></p>
+          <p>· 별도의 번역 과정 없이 CPU가 <strong>직접 실행</strong> 가능</p>
+          <p>· 컴퓨터(CPU) 종류마다 다르므로 <strong>호환성 없음</strong> — 다른 컴퓨터에서는 같은 명령어가 작동하지 않음</p>
+          <p>· 실행 속도가 가장 빠르나 작성이 극도로 어려움</p>
+          <table style="margin-top:.6rem">
+            <tr><th>예시 (덧셈 명령)</th></tr>
+            <tr><td style="font-family:monospace;font-size:13px">10110000 01100001 &nbsp;→ &nbsp; AL 레지스터에 값 97 저장</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">② 어셈블리어 (Assembly Language) — 2세대</div>
+        <div class="list-item-body">
+          <p>기계어의 문제점을 해결하기 위해 개발된 언어이다. 기계어 명령과 <strong>일대일(1:1) 대응</strong>하는 <strong>기호(mnemonic)</strong>를 사용하여 인간이 한층 쉽게 코드를 작성하고 이해할 수 있도록 만들어졌다.</p>
+          <p><strong>특징:</strong></p>
+          <p>· 기계어와 1:1 대응 → <strong>어셈블러(assembler)</strong>가 기계어로 변환</p>
+          <p>· 기계어보다 이해하기 쉽지만 여전히 하드웨어 종속적</p>
+          <p>· 오늘날에도 <strong>시스템 해킹, 컴퓨터 구조 연구, 임베디드 시스템</strong> 등에서 사용됨</p>
+          <table style="margin-top:.6rem">
+            <tr><th>어셈블리어 예시</th><th>의미</th></tr>
+            <tr><td style="font-family:monospace;font-size:13px">MOV AX, 5</td><td>AX 레지스터에 값 5를 저장</td></tr>
+            <tr><td style="font-family:monospace;font-size:13px">ADD AX, 3</td><td>AX에 3을 더함 (결과: 8)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="def-box" style="margin-top:.5rem">
+        <div class="term">저급 언어 (Low-Level Language)</div>
+        <div class="desc">기계어와 어셈블리어를 통틀어 <strong>저급 언어</strong>라고 한다. 컴퓨터 하드웨어에 가까운 언어로, 하드웨어를 직접 제어할 수 있지만 인간이 이해하고 작성하기 어렵다.</div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">고급 언어 (High-Level Language) — 3세대 이상</div>
+        <span class="sub-pages">p.29 읽기 자료 + 보충</span>
+      </div>
+
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">
+        1950년대부터 컴퓨터 사용이 늘면서 더 많은 사람이 프로그래밍을 할 수 있도록 <strong>인간의 언어에 가까운 고급 언어</strong>가 개발되기 시작하였다. Fortran, COBOL이 첫 사례이며, 현재 널리 사용되는 C, Java, Python이 모두 고급 언어에 해당한다.
+      </p>
+
+      <div class="def-box">
+        <div class="term">고급 언어 (High-Level Language)</div>
+        <div class="desc">인간의 언어에 가까운 문법 구조를 가진 프로그래밍 언어이다. <strong>컴파일러 또는 인터프리터</strong>를 통해 컴퓨터가 이해할 수 있는 기계어로 번역된다. 가독성이 높고 작성이 쉬워 생산성이 높다.</div>
+      </div>
+
+      <table style="margin-top:.75rem">
+        <tr><th>구분</th><th>저급 언어</th><th>고급 언어</th></tr>
+        <tr><td class="label-cell">종류</td><td>기계어, 어셈블리어</td><td>C, C++, Java, Python 등</td></tr>
+        <tr><td class="label-cell">인간 친화성</td><td>낮음 (이해하기 어려움)</td><td>높음 (이해하기 쉬움)</td></tr>
+        <tr><td class="label-cell">실행 방식</td><td>CPU 직접 실행 (기계어)<br>어셈블러 변환 후 실행 (어셈블리)</td><td>컴파일러 또는 인터프리터로 기계어 변환 후 실행</td></tr>
+        <tr><td class="label-cell">하드웨어 종속</td><td>강함 (CPU 종류마다 다름)</td><td>약함 (플랫폼 독립적인 경우 많음)</td></tr>
+        <tr><td class="label-cell">실행 속도</td><td>빠름</td><td>상대적으로 느림</td></tr>
+        <tr><td class="label-cell">활용</td><td>시스템 해킹, 구조 연구, 임베디드</td><td>응용 프로그램, 웹, AI, 게임 등 대부분</td></tr>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">컴파일러 vs 인터프리터</div>
+        <span class="sub-pages">교과서 pp.31–32 (중단원 3)</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.5rem">고급 언어로 작성한 소스 코드는 <strong>컴파일러</strong> 또는 <strong>인터프리터</strong>를 통해 기계어로 변환되어야 실행된다.</p>
+      <table>
+        <tr><th>구분</th><th>컴파일러 (Compiler)</th><th>인터프리터 (Interpreter)</th></tr>
+        <tr><td class="label-cell">동작 방식</td><td>소스 코드 <strong>전체</strong>를 한 번에 기계어로 변환</td><td>소스 코드를 <strong>한 줄씩</strong> 해석하여 실행</td></tr>
+        <tr><td class="label-cell">오류 처리</td><td>변환 전 오류 발견 시 변환 중단</td><td>실행 중 오류 발생 시 즉시 실행 중단</td></tr>
+        <tr><td class="label-cell">실행 속도</td><td>빠름</td><td>상대적으로 느림</td></tr>
+        <tr><td class="label-cell">해당 언어</td><td>C, C++ 등</td><td>Python 등</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 섹션 3. 프로그래밍 언어의 종류와 특징 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">3. 프로그래밍 언어의 종류와 특징</div>
+      <span class="section-pages">교과서 pp.16–20</span>
+    </div>
+
+    <div class="lang-grid">
+      <div class="lang-card">
+        <div class="lang-card-header">
+          <span class="lang-name">C</span>
+          <span class="lang-page">p.16</span>
+        </div>
+        <div class="lang-year">1970년대 · 데니스 리치 개발</div>
+        <div class="lang-feature">
+          <strong>장점:</strong> 코드 간결, 실행 빠름, 하드웨어 직접 제어<br>
+          <strong>단점:</strong> 절차적만 가능, 코드 재사용 어려움<br>
+          <strong>활용:</strong> 운영체제, 드라이버, 컴파일러 개발
+        </div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-card-header">
+          <span class="lang-name">C++</span>
+          <span class="lang-page">p.17</span>
+        </div>
+        <div class="lang-year">1985년 · 비야네 스트롭스트룹 개발</div>
+        <div class="lang-feature">
+          <strong>장점:</strong> C 포함 + 객체 지향 확장, STL 라이브러리<br>
+          <strong>단점:</strong> 코드 복잡, 컴파일 시간 김, 가비지 컬렉션 없음<br>
+          <strong>활용:</strong> 게임, 고성능 앱, 서버 개발
+        </div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-card-header">
+          <span class="lang-name">C#</span>
+          <span class="lang-page">p.18</span>
+        </div>
+        <div class="lang-year">2000년 · 마이크로소프트 개발</div>
+        <div class="lang-feature">
+          <strong>장점:</strong> .NET 기반, 가비지 컬렉션 자동, var형 지원<br>
+          <strong>단점:</strong> MS 시스템 종속 경향<br>
+          <strong>활용:</strong> 윈도우 앱, 게임(Unity)
+        </div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-card-header">
+          <span class="lang-name">Java</span>
+          <span class="lang-page">p.18</span>
+        </div>
+        <div class="lang-year">1995년 · 제임스 고슬링 개발</div>
+        <div class="lang-feature">
+          <strong>장점:</strong> JVM으로 플랫폼 독립, 가비지 컬렉션 자동<br>
+          <strong>단점:</strong> JVM 필요, 실행 속도 느림, 메모리 소비 많음<br>
+          <strong>활용:</strong> 모바일 앱, 웹 서비스
+        </div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-card-header">
+          <span class="lang-name">Python</span>
+          <span class="lang-page">p.19</span>
+        </div>
+        <div class="lang-year">1980년대 후반 · 귀도 반 로섬 개발</div>
+        <div class="lang-feature">
+          <strong>장점:</strong> 들여쓰기로 가독성↑, 동적 자료형, 패키지 풍부<br>
+          <strong>단점:</strong> 인터프리터 방식 → 런타임 오류 가능, 실행 느림<br>
+          <strong>활용:</strong> 데이터 처리, AI/ML, 웹 서비스
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection" style="margin-top:1.25rem">
+      <div class="subsection-header">
+        <div class="subsection-title">객체 지향 프로그래밍 지원 여부</div>
+        <span class="sub-pages">p.19 [하나 더 알기]</span>
+      </div>
+      <table>
+        <tr><th>구분</th><th>C</th><th>C++</th><th>C#</th><th>Java</th><th>Python</th></tr>
+        <tr>
+          <td>절차적 프로그래밍</td>
+          <td><span class="tag tag-o">가능</span></td>
+          <td><span class="tag tag-o">가능</span></td>
+          <td><span class="tag tag-o">가능</span></td>
+          <td><span class="tag tag-o">가능</span></td>
+          <td><span class="tag tag-o">가능</span></td>
+        </tr>
+        <tr>
+          <td>객체 지향 프로그래밍</td>
+          <td><span class="tag tag-x">불가능</span></td>
+          <td><span class="tag tag-o">가능</span></td>
+          <td><span class="tag tag-o">가능</span></td>
+          <td><span class="tag tag-o">가능</span></td>
+          <td><span class="tag tag-o">가능</span></td>
+        </tr>
+      </table>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ C만 객체 지향 불가능</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">주요 활용 분야 비교</div>
+        <span class="sub-pages">p.20 [하나 더 알기]</span>
+      </div>
+      <table>
+        <tr><th>활용 분야</th><th>C</th><th>C++</th><th>C#</th><th>Java</th><th>Python</th></tr>
+        <tr><td>시스템·드라이버 개발</td><td class="center">◯</td><td class="center">◯</td><td class="center"></td><td class="center"></td><td class="center"></td></tr>
+        <tr><td>데스크톱 앱 개발</td><td class="center"></td><td class="center">◯</td><td class="center">◯</td><td class="center">◯</td><td class="center"></td></tr>
+        <tr><td>웹 서비스 개발</td><td class="center"></td><td class="center"></td><td class="center">◯</td><td class="center">◯</td><td class="center">◯</td></tr>
+        <tr><td>게임 개발</td><td class="center"></td><td class="center">◯</td><td class="center">◯</td><td class="center">◯</td><td class="center">◯</td></tr>
+        <tr><td>모바일 앱 개발</td><td class="center"></td><td class="center"></td><td class="center"></td><td class="center">◯</td><td class="center">◯</td></tr>
+        <tr><td>데이터 처리·AI</td><td class="center"></td><td class="center"></td><td class="center"></td><td class="center">◯</td><td class="center">◯</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 확인 문제 ══ -->
+  <div class="quiz-section">
+    <div class="quiz-title">확인 문제</div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 1</div>
+      <div class="quiz-q">프로그래밍 언어에 대한 설명으로 <u>옳지 않은</u> 것은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① 프로그래밍 언어는 컴퓨터가 실행해야 할 작업을 표현하는 특별한 언어이다.</div>
+        <div class="quiz-opt">② Python은 인터프리터 방식을 사용하기 때문에 실행 속도가 상대적으로 느리다.</div>
+        <div class="quiz-opt">③ 기계어는 0과 1의 2진수 형태로 표현하며 컴퓨터가 직접 실행할 수 있다.</div>
+        <div class="quiz-opt">④ C는 절차적 프로그래밍과 객체 지향 프로그래밍을 모두 지원한다.</div>
+        <div class="quiz-opt">⑤ 고급 언어는 컴파일러 또는 인터프리터를 통해 기계어로 번역된다.</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q1')">정답 확인</button>
+      <div class="answer-box" id="q1">
+        <div class="ans-label">정답: ④</div>
+        <div class="ans-ref">교과서 p.19 [하나 더 알기] 참고</div>
+        C는 <strong>절차적 프로그래밍만 가능</strong>하며 객체 지향 프로그래밍은 지원하지 않는다. C, C++, C#, Java, Python 중 객체 지향을 지원하지 않는 언어는 C뿐이다.
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 2</div>
+      <div class="quiz-q">기계어와 어셈블리어에 대한 설명으로 <u>옳지 않은</u> 것은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① 기계어는 0과 1의 2진수 형태로 표현되어 CPU가 직접 실행할 수 있다.</div>
+        <div class="quiz-opt">② 어셈블리어는 기계어와 일대일(1:1) 대응하는 기호(mnemonic)로 이루어진다.</div>
+        <div class="quiz-opt">③ 기계어는 모든 컴퓨터에서 동일하게 실행되는 호환성 높은 언어이다.</div>
+        <div class="quiz-opt">④ 어셈블리어는 어셈블러(assembler)에 의해 기계어로 변환된다.</div>
+        <div class="quiz-opt">⑤ 기계어와 어셈블리어를 합쳐 저급 언어라고 한다.</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q2')">정답 확인</button>
+      <div class="answer-box" id="q2">
+        <div class="ans-label">정답: ③</div>
+        <div class="ans-ref">교과서 p.29 읽기 자료 참고</div>
+        기계어는 컴퓨터(CPU)마다 다르기 때문에 <strong>호환성이 없다</strong>. 다른 컴퓨터에서는 같은 명령어가 작동하지 않는 것이 기계어의 큰 문제점이었다. 이를 해결하기 위해 어셈블리어가 개발되었다.
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 3</div>
+      <div class="quiz-q">다음 빈칸 ㉠~㉢에 알맞은 말을 쓰시오.</div>
+      <div class="quiz-sub-text" style="line-height:1.9">
+        프로그래밍 언어는 크게 <strong>저급 언어</strong>와 <strong>고급 언어</strong>로 나눌 수 있다.<br>
+        저급 언어에는 ( ㉠ )와(과) ( ㉡ )이(가) 있으며, 하드웨어를 직접 제어할 수 있지만 인간이 이해하기 어렵다.<br>
+        고급 언어는 인간의 언어에 가까운 문법 구조를 가지며, ( ㉢ ) 또는 인터프리터를 통해 기계어로 번역된다.
+      </div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>㉠: <input class="blank-input blank-input-wide" placeholder="언어 이름"></div>
+        <div>㉡: <input class="blank-input blank-input-wide" placeholder="언어 이름"></div>
+        <div>㉢: <input class="blank-input blank-input-wide" placeholder="번역 프로그램"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q3')">정답 확인</button>
+      <div class="answer-box" id="q3">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.29 읽기 자료 + 보충 참고</div>
+        ㉠ <strong>기계어</strong> — 0과 1의 2진수, CPU가 직접 실행<br>
+        ㉡ <strong>어셈블리어</strong> — 기계어와 1:1 대응하는 기호 사용<br>
+        ㉢ <strong>컴파일러</strong> — 고급 언어 전체를 기계어로 번환 (인터프리터는 한 줄씩 해석)
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 4</div>
+      <div class="quiz-q">다음 상황에 가장 적절한 프로그래밍 언어를 쓰시오.</div>
+      <div class="quiz-sub-text">
+        (가) 스마트폰 운영체제의 하드웨어 드라이버를 개발하려 한다.<br>
+        (나) 대량의 데이터를 수집·분석하여 인공지능 모델을 개발하려 한다.<br>
+        (다) 플랫폼에 관계없이 어디서나 실행되는 웹 서비스용 프로그램을 만들려 한다.
+      </div>
+      <p style="font-size:13px;color:#888;margin:.5rem 0 .75rem">〈보기〉 &nbsp; C &nbsp;·&nbsp; C++ &nbsp;·&nbsp; C# &nbsp;·&nbsp; Java &nbsp;·&nbsp; Python</p>
+      <div class="quiz-inputs">
+        <div>(가): <input class="blank-input blank-input-wide" placeholder="언어명"></div>
+        <div>(나): <input class="blank-input blank-input-wide" placeholder="언어명"></div>
+        <div>(다): <input class="blank-input blank-input-wide" placeholder="언어명"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q4')">정답 확인</button>
+      <div class="answer-box" id="q4">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.16–20 참고</div>
+        (가) <strong>C</strong> — 하드웨어 직접 제어, 실행 속도 빠름 → 드라이버·시스템 개발에 적합 (p.16)<br>
+        (나) <strong>Python</strong> — 풍부한 AI/ML 라이브러리, 데이터 처리 분야에서 가장 널리 사용 (p.19)<br>
+        (다) <strong>Java</strong> — JVM 덕분에 플랫폼·하드웨어에 관계없이 동일하게 실행 가능 (p.18)
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 5</div>
+      <div class="quiz-q">다음은 프로그래밍 언어의 발전 과정을 설명한 것이다. 빈칸을 완성하고 각 언어가 해당하는 세대를 쓰시오.</div>
+      <div class="quiz-sub-text" style="line-height:2">
+        초창기 프로그래밍 언어는 ( ㉠ )세대인 기계어로 시작되었다. 이후 기계어와 일대일 대응하는 기호를 사용하는 ( ㉡ )이(가) ( ㉢ )세대 언어로 개발되었다. 1950년대 이후 인간의 언어에 가까운 ( ㉣ ) 언어가 등장하였으며, 컴파일러를 통해 기계어로 번역된다. 오늘날 사용하는 C, Java, Python은 모두 ( ㉣ ) 언어에 해당한다.
+      </div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>㉠: <input class="blank-input" placeholder="숫자"></div>
+        <div>㉡: <input class="blank-input blank-input-wide" placeholder="언어 이름"></div>
+        <div>㉢: <input class="blank-input" placeholder="숫자"></div>
+        <div>㉣: <input class="blank-input blank-input-wide" placeholder="언어 종류"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q5')">정답 확인</button>
+      <div class="answer-box" id="q5">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.29 읽기 자료 참고</div>
+        ㉠ <strong>1</strong> — 기계어는 1세대 프로그래밍 언어<br>
+        ㉡ <strong>어셈블리어</strong> — 기계어와 1:1 대응 기호 사용<br>
+        ㉢ <strong>2</strong> — 어셈블리어는 2세대 프로그래밍 언어<br>
+        ㉣ <strong>고급</strong> — 인간의 언어에 가까운 3세대 이상의 언어 (↔ 저급 언어)
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>Ⅰ-1. 프로그래밍 언어 · 프로그래밍(파이썬) 학습자료</span>
+    <span>교과서 pp.12–20 / p.29 읽기 자료</span>
+  </div>
+</div>
+<script>
+function toggleAns(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('show');
+  const btn = box.previousElementSibling;
+  btn.textContent = box.classList.contains('show') ? '정답 닫기' : '정답 확인';
+}
+</script>
+</body>
+</html>

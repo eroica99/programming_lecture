@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅰ-3. 프로그램 개발 환경 | 프로그래밍(파이썬) 학습자료</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Apple SD Gothic Neo, sans-serif;
+    font-size: 15px; line-height: 1.75; color: #1a1a1a; background: #f8f8f6;
+  }
+  .top-bar {
+    background: #1a1a1a; color: #fff; font-size: 12px;
+    letter-spacing: .06em; padding: 8px 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .top-bar .grade { color: #aaa; }
+  .container { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* 헤더 */
+  .unit-header { border-bottom: 2.5px solid #1a1a1a; padding-bottom: .85rem; margin-bottom: 1.5rem; }
+  .breadcrumb { font-size: 12px; color: #666; margin-bottom: .35rem; letter-spacing: .03em; }
+  .unit-title { font-size: 24px; font-weight: 700; letter-spacing: -.01em; }
+  .page-range-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; padding: 3px 10px; border-radius: 3px;
+    border: 1px solid #ccc; color: #555; background: #fff;
+  }
+
+  /* 성취기준 */
+  .achievement {
+    background: #fff; border-left: 4px solid #1a1a1a;
+    padding: .85rem 1.1rem; margin-bottom: 2rem; font-size: 13.5px;
+    border-radius: 0 4px 4px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .achievement-label { font-size: 10.5px; font-weight: 700; color: #888; letter-spacing: .1em; margin-bottom: .3rem; }
+
+  /* 섹션 */
+  .section { margin-bottom: 2.5rem; }
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem;
+    margin-bottom: 1.1rem; gap: .75rem; flex-wrap: wrap;
+  }
+  .section-title { font-size: 17px; font-weight: 700; }
+  .section-pages {
+    font-size: 11.5px; color: #777; white-space: nowrap; flex-shrink: 0;
+    border: 1px solid #ddd; padding: 2px 8px; border-radius: 3px; background: #fff;
+  }
+  .subsection { margin-bottom: 1.75rem; }
+  .subsection-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: .65rem; gap: .5rem;
+  }
+  .subsection-title { font-size: 13.5px; font-weight: 700; color: #444; letter-spacing: .03em; }
+  .sub-pages { font-size: 11px; color: #999; white-space: nowrap; }
+
+  /* 정의 박스 */
+  .def-box {
+    border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem;
+    margin: .6rem 0; background: #fff; font-size: 14px;
+  }
+  .def-box .term { font-weight: 700; margin-bottom: .25rem; color: #1a1a1a; font-size: 14.5px; }
+  .def-box .desc { color: #333; line-height: 1.8; }
+  .def-box .sub { font-size: 12.5px; color: #888; margin-top: .35rem; }
+
+  /* 세로 나열 항목 */
+  .list-item {
+    border: 1px solid #ddd; border-radius: 5px; background: #fff;
+    padding: .9rem 1.1rem; margin-bottom: .65rem;
+  }
+  .list-item-title { font-size: 14.5px; font-weight: 700; margin-bottom: .5rem; color: #1a1a1a; }
+  .list-item-body { font-size: 13.5px; color: #333; line-height: 1.85; }
+  .list-item-body p { margin-bottom: .4rem; }
+  .list-item-body p:last-child { margin-bottom: 0; }
+
+  /* 표 */
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: .75rem 0; background: #fff; }
+  th { background: #f0f0ee; font-weight: 700; padding: .6rem .85rem; border: 1px solid #ccc; text-align: left; }
+  td { padding: .55rem .85rem; border: 1px solid #ddd; vertical-align: top; line-height: 1.75; }
+  td.label-cell { font-weight: 700; white-space: nowrap; background: #fafafa; width: 7rem; }
+
+  /* IDE 종류 그리드 */
+  .ide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: .55rem; margin: .75rem 0;
+  }
+  .ide-item {
+    border: 1px solid #ddd; border-radius: 5px;
+    padding: .6rem .85rem; background: #fff;
+    font-size: 13.5px;
+  }
+  .ide-item .ide-name { font-weight: 700; margin-bottom: .15rem; }
+  .ide-item .ide-full { font-size: 12px; color: #888; }
+
+  /* 공동 개발 환경 기능 표 */
+  .func-table td.func-name { font-weight: 700; width: 8rem; white-space: nowrap; background: #fafafa; }
+
+  /* 구분선 */
+  .divider { border: none; border-top: 1px solid #ddd; margin: 2rem 0; }
+
+  /* 확인 문제 */
+  .quiz-section { margin-top: 2rem; }
+  .quiz-title { font-size: 17px; font-weight: 700; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.2rem; }
+  .quiz-item { border: 1px solid #ddd; border-radius: 6px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; background: #fff; }
+  .quiz-num { font-size: 11px; font-weight: 700; color: #888; margin-bottom: .5rem; letter-spacing: .06em; }
+  .quiz-q { font-size: 14px; margin-bottom: .85rem; font-weight: 700; color: #1a1a1a; }
+  .quiz-opts { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .8rem; }
+  .quiz-opt { font-size: 13.5px; padding: .4rem .7rem; border-radius: 4px; border: 1px solid #e0e0e0; background: #fafafa; color: #333; }
+  .quiz-sub { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #fafafa; color: #333; line-height: 1.75; }
+  .quiz-inputs { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .85rem; font-size: 13.5px; color: #333; }
+  .blank-input {
+    border: 1px solid #ccc; border-radius: 4px; padding: .3rem .65rem;
+    font-size: 13.5px; min-width: 100px; font-family: inherit; color: #1a1a1a; background: #fff;
+  }
+  .blank-input:focus { outline: 2px solid #1a1a1a; outline-offset: 1px; }
+  .ans-btn {
+    font-size: 12.5px; padding: .38rem 1rem; border-radius: 4px;
+    border: 1px solid #bbb; background: #fff; cursor: pointer; color: #555; font-family: inherit;
+  }
+  .ans-btn:hover { background: #f0f0ee; }
+  .answer-box {
+    display: none; margin-top: .8rem; padding: .75rem 1rem; border-radius: 4px;
+    font-size: 13.5px; border: 1px solid #ccc; background: #f8f8f6; color: #333; line-height: 1.85;
+  }
+  .answer-box.show { display: block; }
+  .ans-label { font-weight: 700; margin-bottom: .3rem; color: #1a1a1a; }
+  .ans-ref { font-size: 11.5px; color: #888; margin-bottom: .4rem; }
+
+  /* 푸터 */
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 11.5px; color: #aaa; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .top-bar { display: none; }
+    .container { padding: 1rem; }
+    .ans-btn { display: none; }
+    .answer-box { display: block !important; border: 1px solid #ccc; }
+    .blank-input { border-bottom: 1px solid #999; border-top: none; border-left: none; border-right: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span style="font-weight:600">프로그래밍(파이썬) · 학습자료</span>
+  <span class="grade">고등학교 2학년</span>
+</div>
+
+<div class="container">
+
+  <!-- 단원 헤더 -->
+  <div class="unit-header">
+    <div class="breadcrumb">Ⅰ. 프로그래밍의 개요 &gt; 중단원 3</div>
+    <div class="unit-title">프로그램 개발 환경</div>
+    <div class="page-range-bar">
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        교과서 pp.30–35
+      </span>
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        소단원 ①: pp.31–33 &nbsp;·&nbsp; 소단원 ②: pp.34–35
+      </span>
+    </div>
+  </div>
+
+  <!-- 성취기준 -->
+  <div class="achievement">
+    <div class="achievement-label">성취기준</div>
+    <p><strong>[프그 01-04]</strong> 디지털 기술을 통한 프로그래밍 공동 개발 환경의 필요성과 공유 및 협업을 통한 프로그래밍을 경험할 수 있다.</p>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       섹션 1. 통합 개발 환경 (IDE)
+  ══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">1. 통합 개발 환경 (IDE)</div>
+      <span class="section-pages">교과서 pp.31–33</span>
+    </div>
+
+    <!-- IDE 개념 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">IDE의 개념</div>
+        <span class="sub-pages">p.31</span>
+      </div>
+      <div class="def-box">
+        <div class="term">통합 개발 환경 (IDE: Integrated Development Environment)</div>
+        <div class="desc">프로그램 개발과 관련한 여러 가지 도구 프로그램, 즉 <strong>코드 편집기</strong>, <strong>컴파일러/인터프리터</strong>, <strong>디버거</strong> 등의 프로그램이 유기적으로 연결되어 동작함으로써 편리하고 빠르게 프로그램 개발을 할 수 있도록 돕는 소프트웨어이다.</div>
+        <div class="sub">프로그램 개발 과정: 요구 사항 분석 → 알고리즘 작성 → 소스 코드 작성 → 번역(실행 파일 변환) → 디버깅</div>
+      </div>
+      <div class="def-box">
+        <div class="term">소스 코드 (Source Code)</div>
+        <div class="desc">프로그램을 만드는 재료가 되는 코드. 프로그래밍 언어의 문법과 규칙을 사용하여 작성된다.</div>
+      </div>
+      <div class="def-box">
+        <div class="term">디버깅 (Debugging)</div>
+        <div class="desc">프로그램에서 발견된 오류를 찾아내고 수정하는 과정이다.</div>
+      </div>
+    </div>
+
+    <!-- IDE 구성 요소 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">IDE 구성 요소</div>
+        <span class="sub-pages">pp.31–32</span>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">① 코드 편집기</div>
+        <div class="list-item-body">
+          <p>프로그램 소스 코드를 <strong>작성하고 수정</strong>하는 데 사용되는 텍스트 편집 프로그램이다. (p.31)</p>
+          <p>프로그래밍 언어의 문법과 규칙에 따라 <strong>예약어나 기호들을 서로 다른 색깔</strong>로 바꾸어 표시함으로써 코드의 가독성을 높여 준다.</p>
+          <p><strong>들여쓰기를 비롯한 코드 자동 완성 기능</strong>을 제공할 뿐만 아니라 원하는 코드 부분을 빠르게 찾거나 바꿀 수 있는 기능도 제공한다.</p>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">② 컴파일러 / 인터프리터</div>
+        <div class="list-item-body">
+          <p>소스 코드를 컴퓨터가 실행할 수 있는 형태로 변환하거나 해석하여 실행하는 프로그램이다. (p.32)</p>
+          <table style="margin-top:.6rem">
+            <tr><th style="width:7rem">구분</th><th>컴파일러 (Compiler)</th><th>인터프리터 (Interpreter)</th></tr>
+            <tr>
+              <td class="label-cell">동작 방식</td>
+              <td>소스 코드 <strong>전체</strong>를 한 번에 읽어 들인 후 어셈블리어나 기계어로 변환한다.</td>
+              <td>소스 코드를 <strong>한 줄씩</strong> 읽고 해석하여 실행한다.</td>
+            </tr>
+            <tr>
+              <td class="label-cell">오류 처리</td>
+              <td>문법적 오류가 있으면 변환하지 못하고 그 이유를 알려 준다.</td>
+              <td>실행 도중 오류가 발생하면 이유를 알려 주고 실행을 즉시 중단한다.</td>
+            </tr>
+            <tr>
+              <td class="label-cell">실행 속도</td>
+              <td>변환 후 실행하므로 빠르다.</td>
+              <td>한 줄씩 해석하며 실행하므로 상대적으로 느리다.</td>
+            </tr>
+            <tr>
+              <td class="label-cell">해당 언어</td>
+              <td>C, C++ 등</td>
+              <td>Python 등</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">③ 디버거 (Debugger)</div>
+        <div class="list-item-body">
+          <p>오류를 찾아내고 테스트하는 데 사용되는 프로그램이다. (p.32)</p>
+          <p>프로그램의 <strong>실행을 제어</strong>하고 실행 과정에서 프로그램이 사용하는 여러 가지 값들과 <strong>상태 변화</strong>를 추적할 수 있도록 해 준다.</p>
+          <p>프로그램 실행 도중에 잠시 정지시키거나 원하는 단계까지만 선택적으로 실행시키는 등의 작업이 가능하다.</p>
+          <p>프로그램이 사용하는 <strong>메모리, CPU 사용량</strong>도 확인할 수 있어 오류나 잘못된 동작을 찾고 수정하는 데 도움을 준다.</p>
+          <table style="margin-top:.6rem">
+            <tr><th>디버거의 주요 기능</th></tr>
+            <tr><td>실행 제어 — 원하는 지점에서 실행을 멈추거나 단계별로 실행</td></tr>
+            <tr><td>데이터 추적 — 실행 중 변수 값과 프로그램 상태 변화 확인</td></tr>
+            <tr><td>오류 판단/수정 — 잘못된 동작의 원인을 파악하고 알고리즘 확인</td></tr>
+            <tr><td>메모리·CPU 사용량 확인 — 자원 사용 현황 모니터링</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- IDE 종류 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">IDE의 종류</div>
+        <span class="sub-pages">p.33 [그림Ⅰ-16]</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.75rem">IDE의 종류에 따라 지원하는 프로그래밍 언어, 컴파일러·인터프리터 포함 여부, 코드 강조색, 화면 배치, 클라우드 시스템 연동 여부 등이 다르다. 사용하려는 언어, 개발 방식, 협업 여부, 개인적 익숙함 등을 고려하여 선택한다.</p>
+      <div class="ide-grid">
+        <div class="ide-item">
+          <div class="ide-name">주피터 (Jupyter)</div>
+          <div class="ide-full">데이터 분석·과학 분야에서 널리 사용</div>
+        </div>
+        <div class="ide-item">
+          <div class="ide-name">파이참 (PyCharm)</div>
+          <div class="ide-full">Python 전용 강력한 IDE</div>
+        </div>
+        <div class="ide-item">
+          <div class="ide-name">비주얼 스튜디오 코드</div>
+          <div class="ide-full">Visual Studio Code — 다양한 언어 지원</div>
+        </div>
+        <div class="ide-item">
+          <div class="ide-name">스파이더 (Spyder)</div>
+          <div class="ide-full">과학·데이터 분석용 Python IDE</div>
+        </div>
+        <div class="ide-item">
+          <div class="ide-name">구글 코랩 (Google Colab)</div>
+          <div class="ide-full">브라우저 기반, 설치 불필요</div>
+        </div>
+        <div class="ide-item">
+          <div class="ide-name">아톰 (Atom)</div>
+          <div class="ide-full">오픈소스 텍스트 에디터 기반 IDE</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#888;margin-top:.4rem">※ Python을 설치하면 IDLE(Integrated Development and Learning Environment)이 기본으로 함께 설치된다.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════
+       섹션 2. 공동 개발 환경
+  ══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">2. 공동 개발 환경</div>
+      <span class="section-pages">교과서 pp.34–35</span>
+    </div>
+
+    <!-- 개념 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">공동 개발 환경의 개념</div>
+        <span class="sub-pages">p.34</span>
+      </div>
+      <div class="def-box">
+        <div class="term">공동 개발 환경 (온라인)</div>
+        <div class="desc">여러 사람이 협업하여 프로그램을 개발하도록 온라인으로 연결되거나, 특별한 소프트웨어를 설치하지 않고도 <strong>웹 브라우저 접속만으로</strong> 프로그램을 개발할 수 있는 환경이다.</div>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-top:.65rem">여러 명의 개발자가 동시에 소스 코드와 문서를 온라인으로 공유·편집하는 과정에서는 <strong>버전 관리 및 충돌 문제</strong>가 발생할 수 있다. 공동 개발 환경은 이를 해결하기 위한 다양한 기능을 함께 제공한다.</p>
+    </div>
+
+    <!-- 제공 기능 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">공동 개발 환경의 제공 기능</div>
+        <span class="sub-pages">pp.34–35</span>
+      </div>
+      <table class="func-table">
+        <tr><th style="width:8rem">기능</th><th>내용</th></tr>
+        <tr>
+          <td class="func-name">코드 작성·편집</td>
+          <td>소스 코드 작성 및 편집, 코드 글자색 강조 표시 기능을 제공한다.</td>
+        </tr>
+        <tr>
+          <td class="func-name">공유 기능</td>
+          <td>소스 코드 및 문서를 여러 개발자가 온라인으로 공유하며 함께 작업할 수 있다.</td>
+        </tr>
+        <tr>
+          <td class="func-name">버전 관리</td>
+          <td>변경 사항 추적, 코드 비교, 코드 병합, 히스토리 및 복구 기능을 제공하여 버전 관리 및 충돌 문제를 해결한다.</td>
+        </tr>
+        <tr>
+          <td class="func-name">프로젝트 관리</td>
+          <td>프로젝트 일정, 작업 분배 및 할당, 작업 상태 추적 등을 관리하는 프로젝트 관리 도구를 제공한다.</td>
+        </tr>
+        <tr>
+          <td class="func-name">메시지·커뮤니케이션</td>
+          <td>여러 개발자 사이의 원활한 협력 및 의사소통을 위한 자체 메시징 및 커뮤니케이션 서비스를 제공한다.</td>
+        </tr>
+      </table>
+      <p style="font-size:13px;color:#555;margin-top:.5rem">예) Replit, Eclipse Che, Project Jupyter, GitHub 등 (p.34 [그림Ⅰ-17])</p>
+    </div>
+
+    <!-- 장점 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">공동 개발 환경의 장점</div>
+        <span class="sub-pages">p.35</span>
+      </div>
+      <div class="list-item">
+        <div class="list-item-body">
+          <p><strong>시공간 제약 없는 협업:</strong> 전 세계 어디서든 팀원들과 온라인으로 협력하여 효율적으로 프로그램을 개발할 수 있다.</p>
+          <p><strong>개발 효율성 향상:</strong> 작업 분배·상태 추적·버전 관리 등의 도구를 통해 여러 개발자의 진행 상황을 파악하며 업무를 조절할 수 있다.</p>
+          <p><strong>코드 품질 향상:</strong> 팀원 간 코드 공유와 상호 검토를 통해 코드의 품질을 높이고 프로젝트를 성공적으로 완료할 수 있다.</p>
+          <p><strong>글로벌 협력 지원:</strong> 전 세계에서 지식을 수집하고 새로운 비즈니스 기회를 창출하는 글로벌 규모의 개발이 가능하다.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- IDE vs 공동 개발 환경 비교 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">통합 개발 환경 vs 공동 개발 환경 비교</div>
+        <span class="sub-pages">pp.31–35</span>
+      </div>
+      <table>
+        <tr><th>구분</th><th>통합 개발 환경 (IDE)</th><th>공동 개발 환경</th></tr>
+        <tr>
+          <td class="label-cell">개발 방식</td>
+          <td>개인 또는 소규모 팀이 로컬 환경에서 개발</td>
+          <td>여러 사람이 온라인으로 협업하며 개발</td>
+        </tr>
+        <tr>
+          <td class="label-cell">접속 방법</td>
+          <td>소프트웨어 설치 필요 (일반적)</td>
+          <td>웹 브라우저 접속만으로 사용 가능</td>
+        </tr>
+        <tr>
+          <td class="label-cell">주요 구성</td>
+          <td>코드 편집기, 컴파일러/인터프리터, 디버거</td>
+          <td>공유, 버전 관리, 프로젝트 관리, 메시지 기능</td>
+        </tr>
+        <tr>
+          <td class="label-cell">예시</td>
+          <td>주피터, 파이참, VS Code, 구글 코랩</td>
+          <td>GitHub, Replit, Eclipse Che</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════
+       확인 문제
+  ══════════════════════════════════════ -->
+  <div class="quiz-section">
+    <div class="quiz-title">확인 문제</div>
+
+    <!-- Q1 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 1</div>
+      <div class="quiz-q">다음 빈칸 ㉠~㉢에 들어갈 IDE 구성 요소를 쓰시오.</div>
+      <div class="quiz-sub" style="line-height:2">
+        통합 개발 환경(IDE)은 프로그램 개발에 필요한 여러 도구를 통합한 소프트웨어이다.<br>
+        ( ㉠ )은(는) 소스 코드를 작성하고 수정하는 텍스트 편집 프로그램으로, 예약어를 색깔로 구분하고 자동 완성 기능을 제공한다.<br>
+        ( ㉡ )은(는) 소스 코드 전체를 한 번에 기계어로 변환하고, ( ㉢ )은(는) 한 줄씩 해석하여 실행한다.
+      </div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>㉠: <input class="blank-input" placeholder="구성 요소"></div>
+        <div>㉡: <input class="blank-input" placeholder="구성 요소"></div>
+        <div>㉢: <input class="blank-input" placeholder="구성 요소"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q1')">정답 확인</button>
+      <div class="answer-box" id="q1">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.31–32 참고</div>
+        ㉠ <strong>코드 편집기</strong> — 소스 코드 작성·수정, 예약어 색상 표시, 자동 완성 기능 제공 (p.31)<br>
+        ㉡ <strong>컴파일러</strong> — 전체 코드를 한 번에 기계어로 변환, 문법 오류 시 변환 중단 (p.32)<br>
+        ㉢ <strong>인터프리터</strong> — 한 줄씩 해석하여 실행, 실행 중 오류 발생 시 실행 중단 (p.32)
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 2</div>
+      <div class="quiz-q">컴파일러와 인터프리터에 대한 설명으로 <u>옳지 않은</u> 것은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① 컴파일러는 소스 코드 전체를 한 번에 읽어 기계어로 변환한다.</div>
+        <div class="quiz-opt">② 인터프리터는 소스 코드를 한 줄씩 해석하여 실행한다.</div>
+        <div class="quiz-opt">③ 컴파일러는 문법적 오류가 있으면 변환을 중단하고 오류 이유를 알려 준다.</div>
+        <div class="quiz-opt">④ 인터프리터는 실행 도중 오류가 발생해도 끝까지 실행을 완료한 후 오류를 알려 준다.</div>
+        <div class="quiz-opt">⑤ Python은 인터프리터 방식을 사용한다.</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q2')">정답 확인</button>
+      <div class="answer-box" id="q2">
+        <div class="ans-label">정답: ④</div>
+        <div class="ans-ref">교과서 p.32 참고</div>
+        인터프리터는 프로그램 실행 도중에 오류가 발생하면 <strong>즉시 그 이유를 알려 주고 프로그램 실행을 중단</strong>한다. 끝까지 실행을 완료하는 것이 아니다.
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 3</div>
+      <div class="quiz-q">다음 설명에 해당하는 공동 개발 환경의 기능을 〈보기〉에서 골라 쓰시오.</div>
+      <div class="quiz-sub">(가) 여러 개발자가 동시에 같은 파일을 수정할 때 발생하는 충돌 문제를 해결하며, 변경 사항 추적·코드 비교·병합·복구 기능을 제공한다.</div>
+      <div class="quiz-sub">(나) 프로젝트 일정, 작업 분배 및 할당, 작업 상태 추적 등을 관리하여 여러 개발자의 진행 상황을 파악하고 업무를 조절한다.</div>
+      <div class="quiz-sub">(다) 여러 개발자 사이의 원활한 협력 및 의사소통을 위한 서비스로, 팀원 간 대화와 정보 공유를 지원한다.</div>
+      <p style="font-size:13px;color:#888;margin:.5rem 0 .85rem">〈보기〉 &nbsp; 버전 관리 기능 &nbsp;·&nbsp; 프로젝트 관리 기능 &nbsp;·&nbsp; 메시지 및 커뮤니케이션 기능 &nbsp;·&nbsp; 공유 기능</p>
+      <div class="quiz-inputs">
+        <div>(가): <input class="blank-input" style="min-width:160px" placeholder="기능명"></div>
+        <div>(나): <input class="blank-input" style="min-width:160px" placeholder="기능명"></div>
+        <div>(다): <input class="blank-input" style="min-width:160px" placeholder="기능명"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q3')">정답 확인</button>
+      <div class="answer-box" id="q3">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.34–35 참고</div>
+        (가) <strong>버전 관리 기능</strong> — 변경 사항 추적, 코드 비교·병합·복구 기능으로 충돌 문제 해결 (p.34)<br>
+        (나) <strong>프로젝트 관리 기능</strong> — 일정·작업 분배·상태 추적으로 업무 조절 (p.35)<br>
+        (다) <strong>메시지 및 커뮤니케이션 기능</strong> — 팀원 간 의사소통과 협력 지원 (p.34)
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 4</div>
+      <div class="quiz-q">다음 중 통합 개발 환경(IDE)과 공동 개발 환경에 대한 설명으로 <u>옳은</u> 것은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① 공동 개발 환경은 반드시 별도의 소프트웨어를 설치해야만 사용할 수 있다.</div>
+        <div class="quiz-opt">② IDE는 코드 편집기, 컴파일러/인터프리터, 디버거 등이 유기적으로 연결된 소프트웨어이다.</div>
+        <div class="quiz-opt">③ 디버거는 소스 코드를 기계어로 변환하는 역할을 한다.</div>
+        <div class="quiz-opt">④ 공동 개발 환경에서는 한 명의 개발자만 파일에 접근할 수 있다.</div>
+        <div class="quiz-opt">⑤ 코드 편집기는 프로그램의 오류를 찾아 수정하는 디버깅 기능을 담당한다.</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q4')">정답 확인</button>
+      <div class="answer-box" id="q4">
+        <div class="ans-label">정답: ②</div>
+        <div class="ans-ref">교과서 pp.31–35 참고</div>
+        IDE는 코드 편집기, 컴파일러/인터프리터, 디버거 등이 유기적으로 연결되어 동작하는 소프트웨어이다. (p.31)<br><br>
+        ① 공동 개발 환경은 <strong>웹 브라우저 접속만으로</strong> 사용 가능하다. (p.34)<br>
+        ③ 소스 코드를 기계어로 변환하는 것은 <strong>컴파일러</strong>의 역할이다. (p.32)<br>
+        ④ 공동 개발 환경은 <strong>여러 개발자</strong>가 동시에 접근·편집할 수 있다. (p.34)<br>
+        ⑤ 오류를 찾아 수정하는 것은 <strong>디버거</strong>의 역할이다. (p.32)
+      </div>
+    </div>
+
+  </div><!-- /.quiz-section -->
+
+  <!-- 푸터 -->
+  <div class="footer">
+    <span>Ⅰ-3. 프로그램 개발 환경 · 프로그래밍(파이썬) 학습자료</span>
+    <span>교과서 pp.30–35</span>
+  </div>
+
+</div><!-- /.container -->
+
+<script>
+function toggleAns(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('show');
+  const btn = box.previousElementSibling;
+  btn.textContent = box.classList.contains('show') ? '정답 닫기' : '정답 확인';
+}
+</script>
+</body>
+</html>

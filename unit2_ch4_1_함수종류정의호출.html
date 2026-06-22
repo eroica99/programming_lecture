@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅱ-4-①. 함수의 종류와 정의·호출 | 프로그래밍(파이썬) 학습자료</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Malgun Gothic', '맑은 고딕', Apple SD Gothic Neo, sans-serif; font-size: 15px; line-height: 1.75; color: #1a1a1a; background: #f8f8f6; }
+  .top-bar { background: #1a1a1a; color: #fff; font-size: 12px; letter-spacing: .06em; padding: 8px 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .top-bar .grade { color: #aaa; }
+  .container { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .unit-header { border-bottom: 2.5px solid #1a1a1a; padding-bottom: .85rem; margin-bottom: 1.5rem; }
+  .breadcrumb { font-size: 12px; color: #666; margin-bottom: .35rem; letter-spacing: .03em; }
+  .unit-title { font-size: 24px; font-weight: 700; letter-spacing: -.01em; }
+  .page-range-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+  .page-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 3px 10px; border-radius: 3px; border: 1px solid #ccc; color: #555; background: #fff; }
+  .achievement { background: #fff; border-left: 4px solid #1a1a1a; padding: .85rem 1.1rem; margin-bottom: 2rem; font-size: 13.5px; border-radius: 0 4px 4px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .achievement-label { font-size: 10.5px; font-weight: 700; color: #888; letter-spacing: .1em; margin-bottom: .3rem; }
+  .section { margin-bottom: 2.5rem; }
+  .section-header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.1rem; gap: .75rem; flex-wrap: wrap; }
+  .section-title { font-size: 17px; font-weight: 700; }
+  .section-pages { font-size: 11.5px; color: #777; white-space: nowrap; flex-shrink: 0; border: 1px solid #ddd; padding: 2px 8px; border-radius: 3px; background: #fff; }
+  .subsection { margin-bottom: 1.75rem; }
+  .subsection-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: .65rem; gap: .5rem; }
+  .subsection-title { font-size: 13.5px; font-weight: 700; color: #444; letter-spacing: .03em; }
+  .sub-pages { font-size: 11px; color: #999; white-space: nowrap; }
+  .def-box { border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; margin: .6rem 0; background: #fff; font-size: 14px; }
+  .def-box .term { font-weight: 700; margin-bottom: .25rem; color: #1a1a1a; font-size: 14.5px; }
+  .def-box .desc { color: #333; line-height: 1.8; }
+  .def-box .sub { font-size: 12.5px; color: #888; margin-top: .35rem; }
+  .list-item { border: 1px solid #ddd; border-radius: 5px; background: #fff; padding: .9rem 1.1rem; margin-bottom: .65rem; }
+  .list-item-title { font-size: 14.5px; font-weight: 700; margin-bottom: .5rem; color: #1a1a1a; }
+  .list-item-body { font-size: 13.5px; color: #333; line-height: 1.85; }
+  .list-item-body p { margin-bottom: .4rem; }
+  .list-item-body p:last-child { margin-bottom: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: .75rem 0; background: #fff; }
+  th { background: #f0f0ee; font-weight: 700; padding: .6rem .85rem; border: 1px solid #ccc; text-align: left; }
+  td { padding: .55rem .85rem; border: 1px solid #ddd; vertical-align: top; line-height: 1.75; }
+  td.label-cell { font-weight: 700; white-space: nowrap; background: #fafafa; }
+  .code-result { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin: .65rem 0; }
+  .code-3col { display: grid; grid-template-columns: 1.4fr 0.8fr 0.8fr; gap: .65rem; margin: .65rem 0; }
+  @media (max-width: 580px) { .code-result, .code-3col { grid-template-columns: 1fr; } }
+  .code-result-label { font-size: 11px; font-weight: 700; color: #888; letter-spacing: .06em; margin-bottom: .3rem; }
+  .code-block { background: #f4f4f2; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #1a1a1a; white-space: pre; }
+  .result-block { background: #fff; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #333; white-space: pre; }
+  .input-block { background: #f8f8f6; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #555; white-space: pre; }
+  .warn-box { background: #fffbf0; border: 1px solid #e8d89a; border-radius: 5px; padding: .75rem 1rem; font-size: 13.5px; color: #5a4a00; margin: .65rem 0; line-height: 1.8; }
+  .flow-explain { border: 1px solid #ddd; border-radius: 5px; background: #fff; padding: .85rem 1.1rem; margin: .65rem 0; font-size: 13.5px; line-height: 1.9; }
+  .divider { border: none; border-top: 1px solid #ddd; margin: 2rem 0; }
+  code { font-family: 'Consolas', 'D2Coding', monospace; background: #f0f0ee; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+  .quiz-section { margin-top: 2rem; }
+  .quiz-title { font-size: 17px; font-weight: 700; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.2rem; }
+  .quiz-item { border: 1px solid #ddd; border-radius: 6px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; background: #fff; }
+  .quiz-num { font-size: 11px; font-weight: 700; color: #888; margin-bottom: .5rem; letter-spacing: .06em; }
+  .quiz-q { font-size: 14px; margin-bottom: .85rem; font-weight: 700; color: #1a1a1a; }
+  .quiz-opts { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .8rem; }
+  .quiz-opt { font-size: 13.5px; padding: .4rem .7rem; border-radius: 4px; border: 1px solid #e0e0e0; background: #fafafa; color: #333; }
+  .quiz-sub { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #f4f4f2; color: #333; line-height: 1.75; font-family: 'Consolas', 'D2Coding', monospace; white-space: pre; }
+  .quiz-sub-text { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #fafafa; color: #333; line-height: 1.75; }
+  .quiz-inputs { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .85rem; font-size: 13.5px; color: #333; }
+  .blank-input { border: 1px solid #ccc; border-radius: 4px; padding: .3rem .65rem; font-size: 13.5px; min-width: 110px; font-family: 'Consolas', 'D2Coding', monospace; color: #1a1a1a; background: #fff; }
+  .blank-input:focus { outline: 2px solid #1a1a1a; outline-offset: 1px; }
+  .blank-input-wide { min-width: 220px; }
+  .ans-btn { font-size: 12.5px; padding: .38rem 1rem; border-radius: 4px; border: 1px solid #bbb; background: #fff; cursor: pointer; color: #555; font-family: inherit; }
+  .ans-btn:hover { background: #f0f0ee; }
+  .answer-box { display: none; margin-top: .8rem; padding: .75rem 1rem; border-radius: 4px; font-size: 13.5px; border: 1px solid #ccc; background: #f8f8f6; color: #333; line-height: 1.85; }
+  .answer-box.show { display: block; }
+  .ans-label { font-weight: 700; margin-bottom: .3rem; color: #1a1a1a; }
+  .ans-ref { font-size: 11.5px; color: #888; margin-bottom: .4rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 11.5px; color: #aaa; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .top-bar { display: none; }
+    .container { padding: 1rem; }
+    .ans-btn { display: none; }
+    .answer-box { display: block !important; border: 1px solid #ccc; }
+    .blank-input { border-bottom: 1px solid #999; border-top: none; border-left: none; border-right: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <span style="font-weight:600">프로그래밍(파이썬) · 학습자료</span>
+  <span class="grade">고등학교 2학년</span>
+</div>
+<div class="container">
+
+  <div class="unit-header">
+    <div class="breadcrumb">Ⅱ. 프로그래밍의 기초 &gt; 중단원 4. 함수 &gt; ① 함수의 종류와 정의·호출</div>
+    <div class="unit-title">함수의 종류와 정의·호출</div>
+    <div class="page-range-bar">
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        교과서 pp.127–134
+      </span>
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        함수의 종류: pp.127–131 &nbsp;·&nbsp; 정의·호출: pp.132–134
+      </span>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-label">성취기준</div>
+    <p><strong>[프그 02-05]</strong> 함수의 개념과 종류, 필요성을 이해하고, 함수 정의 및 사용자 정의 함수를 호출하고 결괏값을 반환하는 프로그램을 작성할 수 있다.</p>
+  </div>
+
+  <!-- ══ 섹션 1. 함수의 개념과 종류 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">1. 함수의 개념과 종류</div>
+      <span class="section-pages">교과서 pp.127–131</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">함수의 개념</div>
+        <span class="sub-pages">p.127</span>
+      </div>
+      <div class="def-box">
+        <div class="term">함수 (function)</div>
+        <div class="desc">어떤 작업의 수행을 위하여 필요한 값과 처리 작업을 작성한 후 <strong>새로운 이름으로 정의</strong>한 것이다. 프로그래밍 언어에서 함수는 일반적으로 <strong>소괄호( ) 기호</strong>와 함께 사용된다.</div>
+        <div class="sub">함수는 종류와 환경에 따라 루틴(routine), 서브프로그램(subprogram), 서브루틴(subroutine), 프러시저(procedure), 메서드(method) 등으로 불리기도 한다.</div>
+      </div>
+
+      <div class="subsection-header" style="margin-top:1.1rem">
+        <div class="subsection-title">함수를 사용하는 이유</div>
+        <span class="sub-pages">p.127</span>
+      </div>
+      <div class="list-item">
+        <div class="list-item-title">① 코드 재사용 — 간결한 작성</div>
+        <div class="list-item-body">
+          <p>반복되는 코드를 새로운 이름으로 정의하여 이전보다 간단히 작성할 수 있으며, 크고 복잡한 프로그램을 여러 개의 함수로 나누어 작성할 수 있다.</p>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-item-title">② 가독성 향상 + 오류 수정 용이</div>
+        <div class="list-item-body">
+          <p>크고 복잡한 프로그램을 여러 개의 함수로 나누어 작성하면 <strong>코드의 가독성을 높일</strong> 수 있을 뿐만 아니라 프로그램의 실행 단계를 모듈화할 수 있으므로 오류를 쉽게 찾아 수정할 수 있다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">함수의 3가지 종류</div>
+        <span class="sub-pages">p.128 [표Ⅱ-9]</span>
+      </div>
+      <table>
+        <tr><th style="width:9rem">종류</th><th>설명</th><th>사용 방법</th><th>예시</th></tr>
+        <tr>
+          <td class="label-cell">내장 함수<br>(built-in)</td>
+          <td>프로그래밍 언어 자체에서 기본으로 제공되는 함수</td>
+          <td>특별한 준비 작업 없이 <strong>바로 사용</strong> 가능</td>
+          <td><code>print()</code>, <code>input()</code>, <code>len()</code>, <code>int()</code>, <code>max()</code>, <code>min()</code></td>
+        </tr>
+        <tr>
+          <td class="label-cell">라이브러리 함수<br>(library)</td>
+          <td>라이브러리 파일(모듈)을 통하여 제공되는 함수</td>
+          <td>관련 <strong>라이브러리 모듈을 먼저 참조</strong>한 후 사용 가능</td>
+          <td><code>math.gcd()</code>, <code>math.sqrt()</code>, <code>random.randint()</code></td>
+        </tr>
+        <tr>
+          <td class="label-cell">사용자 정의 함수<br>(user-defined)</td>
+          <td>필요에 따라 사용자가 직접 정의하여 사용하는 함수</td>
+          <td>사용하기 <strong>전에 먼저 정의</strong>한 후 사용 가능</td>
+          <td><code>def f():</code> 로 직접 작성</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">내장 함수 예시</div>
+        <span class="sub-pages">pp.128–129</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">파이썬 내장 함수는 인터프리터에 의해 해석·실행되므로 별도의 준비 없이 바로 사용 가능하다.</p>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드 — len() 사용</div>
+          <div class="code-block">s = input()
+print(len(s))</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">hello python</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">12</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.3rem">※ "hello python" 은 스페이스 포함 총 12개의 문자</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">라이브러리 함수 — 모듈 참조 방법</div>
+        <span class="sub-pages">p.130 [표Ⅱ-10]</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">파이썬에서는 <strong>모듈(module)</strong>이라고 불리는 라이브러리 파일을 참조해서 그 안에 미리 정의된 함수와 상숫값을 사용한다.</p>
+      <table>
+        <tr><th>명령 형식</th><th>예시</th><th>의미</th></tr>
+        <tr>
+          <td><code>import 모듈명</code></td>
+          <td><code>import math</code></td>
+          <td>math 모듈 전체를 참조. <code>math.함수명()</code>으로 사용</td>
+        </tr>
+        <tr>
+          <td><code>import 모듈명 as 약어</code></td>
+          <td><code>import math as mt</code></td>
+          <td>math 모듈을 약어 mt로 참조. <code>mt.함수명()</code>으로 사용</td>
+        </tr>
+        <tr>
+          <td><code>from 모듈명 import *</code></td>
+          <td><code>from math import *</code></td>
+          <td>math 모듈의 모든 정의를 참조. <code>함수명()</code>으로 바로 사용</td>
+        </tr>
+      </table>
+
+      <div class="code-3col" style="margin-top:.75rem">
+        <div>
+          <div class="code-result-label">코드 — math.gcd() 사용</div>
+          <div class="code-block">import math
+a, b = map(int, input().split())
+print(math.gcd(a, b))</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">192 72</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">24</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.3rem">※ <code>gcd(a, b)</code> — 두 정수의 최대 공약수(Greatest Common Divisor) 계산</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 섹션 2. 함수의 정의와 호출 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">2. 함수의 정의와 호출</div>
+      <span class="section-pages">교과서 pp.132–134</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">함수의 정의 (def)</div>
+        <span class="sub-pages">pp.132–133</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">파이썬에서는 예약어 <strong><code>def</code></strong>를 사용해서 함수를 정의한다. 함수를 정의한 것만으로는 작성 내용이 실행되지 않는다.</p>
+      <table>
+        <tr><th style="width:10rem">형식 요소</th><th>설명</th></tr>
+        <tr><td class="label-cell"><code>def</code></td><td>함수를 정의하는 예약어. "정의하다(define)"의 줄임말</td></tr>
+        <tr><td class="label-cell">함수 이름</td><td>변수 이름을 만드는 규칙과 동일 (영문자·숫자·_만 사용, 숫자로 시작 불가, 대소문자 구분)</td></tr>
+        <tr><td class="label-cell">소괄호 ( )</td><td>함수임을 나타내는 기호. 매개변수가 없어도 반드시 작성</td></tr>
+        <tr><td class="label-cell">콜론 (:)</td><td>def 줄 끝에 반드시 작성</td></tr>
+        <tr><td class="label-cell">들여쓰기</td><td>함수 블록 안의 코드는 반드시 들여쓰기로 작성</td></tr>
+      </table>
+
+      <div class="code-result" style="margin-top:.75rem">
+        <div>
+          <div class="code-result-label">함수 정의 (실행 안 됨)</div>
+          <div class="code-block">def f():
+    print("Hello")</div>
+        </div>
+        <div>
+          <div class="code-result-label">정의 + 호출 (실행됨)</div>
+          <div class="code-block">def f():
+    print("Hello")
+f()          # 함수 호출</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        함수를 정의하는 것을 <strong>함수의 선언(declaration)</strong>이라고도 한다. 함수를 정의(선언)했을 때 블록 내용이 실행되지 않으며, 반드시 <strong>호출(call)</strong>해야 실행된다.
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">함수의 호출 (call)과 복귀 (return)</div>
+        <span class="sub-pages">pp.133–134</span>
+      </div>
+      <div class="def-box">
+        <div class="term">함수의 호출 (call)</div>
+        <div class="desc">정의되어 있는 함수의 내용을 불러 실행시키는 것. 함수 이름과 소괄호를 함께 작성하여 호출한다.</div>
+      </div>
+      <div class="def-box">
+        <div class="term">복귀 (return)</div>
+        <div class="desc">함수로 정의해 둔 명령이 모두 실행된 후, 함수가 호출되었던 <strong>원래 위치로 돌아가</strong> 그다음 명령을 실행하는 것이다.</div>
+      </div>
+
+      <div class="code-3col" style="margin-top:.75rem">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">def f():
+    print("Hello")
+f()
+print("World")</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 흐름</div>
+          <div class="input-block">1. f() 호출
+2. "Hello" 출력
+3. 호출 위치로 복귀
+4. "World" 출력</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">Hello
+World</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ 함수를 여러 번 호출하면 정의된 코드 블록이 그 횟수만큼 반복 실행된다.</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">함수 정의 위치 — 반드시 호출보다 앞에</div>
+        <span class="sub-pages">pp.132–133</span>
+      </div>
+      <div class="code-result">
+        <div>
+          <div class="code-result-label">올바른 순서 (정의 → 호출)</div>
+          <div class="code-block">def f():       # 먼저 정의
+    print("Hello")
+f()            # 그 다음 호출</div>
+        </div>
+        <div>
+          <div class="code-result-label">오류 발생 (호출 → 정의)</div>
+          <div class="code-block">f()            # 호출 먼저 → 오류!
+def f():
+    print("Hello")</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        파이썬에서 함수는 <strong>반드시 정의한 후에 호출</strong>해야 한다. 호출 코드가 정의 코드보다 앞에 오면 오류가 발생한다.
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 확인 문제 ══ -->
+  <div class="quiz-section">
+    <div class="quiz-title">확인 문제</div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 1 · 개념 확인</div>
+      <div class="quiz-q">함수에 대한 설명으로 <u>옳지 않은</u> 것은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① 함수를 사용하면 반복되는 코드를 새로운 이름으로 정의하여 간결하게 작성할 수 있다.</div>
+        <div class="quiz-opt">② 내장 함수는 특별한 준비 작업 없이 바로 사용할 수 있다.</div>
+        <div class="quiz-opt">③ 라이브러리 함수는 관련 모듈을 먼저 참조한 후 사용할 수 있다.</div>
+        <div class="quiz-opt">④ 파이썬에서 함수를 정의하면 즉시 정의한 내용이 실행된다.</div>
+        <div class="quiz-opt">⑤ 사용자 정의 함수는 사용하기 전에 먼저 정의한 후 사용할 수 있다.</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q1')">정답 확인</button>
+      <div class="answer-box" id="q1">
+        <div class="ans-label">정답: ④</div>
+        <div class="ans-ref">교과서 pp.132–133 참고</div>
+        함수를 <strong>정의</strong>하는 것만으로는 작성 내용이 실행되지 않는다. 함수로 정의한 내용을 불러 실행시키기 위해서는 반드시 <strong>호출(call)</strong>해야 한다.
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 2 · 함수 종류 분류</div>
+      <div class="quiz-q">다음 각 함수가 해당하는 종류를 〈보기〉에서 골라 쓰시오.</div>
+      <p style="font-size:13px;color:#888;margin-bottom:.65rem">〈보기〉 &nbsp; 내장 함수 &nbsp;·&nbsp; 라이브러리 함수 &nbsp;·&nbsp; 사용자 정의 함수</p>
+      <div class="quiz-inputs">
+        <div><code>print()</code>, <code>len()</code>, <code>int()</code>: <input class="blank-input blank-input-wide" placeholder="종류"></div>
+        <div><code>math.gcd()</code>, <code>math.sqrt()</code>: <input class="blank-input blank-input-wide" placeholder="종류"></div>
+        <div><code>def f(n): return n*2</code>로 정의한 f: <input class="blank-input blank-input-wide" placeholder="종류"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q2')">정답 확인</button>
+      <div class="answer-box" id="q2">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.128 [표Ⅱ-9] 참고</div>
+        <code>print()</code>, <code>len()</code>, <code>int()</code> → <strong>내장 함수</strong> — 파이썬에 기본 내장, 별도 준비 불필요<br>
+        <code>math.gcd()</code>, <code>math.sqrt()</code> → <strong>라이브러리 함수</strong> — math 모듈을 먼저 참조해야 사용 가능<br>
+        <code>def f(n):</code>로 정의한 f → <strong>사용자 정의 함수</strong> — 사용자가 직접 정의하여 사용
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 3 · 빈칸 완성 — 모듈 참조</div>
+      <div class="quiz-q">다음 설명을 참고하여 빈칸에 알맞은 코드를 쓰시오.</div>
+      <div class="quiz-sub-text" style="line-height:1.9">
+        (가) math 모듈 전체를 참조하여 math.gcd()를 사용하고 싶다.<br>
+        (나) math 모듈을 약어 m으로 참조하여 m.sqrt()를 사용하고 싶다.<br>
+        (다) math 모듈의 모든 정의를 참조하여 gcd()를 직접 사용하고 싶다.
+      </div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>(가): <input class="blank-input blank-input-wide" placeholder="import 문"></div>
+        <div>(나): <input class="blank-input blank-input-wide" placeholder="import 문"></div>
+        <div>(다): <input class="blank-input blank-input-wide" placeholder="import 문"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q3')">정답 확인</button>
+      <div class="answer-box" id="q3">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.130 [표Ⅱ-10] 참고</div>
+        (가) <strong><code>import math</code></strong><br>
+        (나) <strong><code>import math as m</code></strong><br>
+        (다) <strong><code>from math import *</code></strong>
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 4 · 코드 추적 — 정의와 호출</div>
+      <div class="quiz-q">다음 코드의 실행 결과를 쓰시오.</div>
+      <div class="quiz-sub">def f():
+    print("Python")
+print("Hello")
+f()
+print("World")
+f()</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>결과 (출력 순서대로): <input class="blank-input blank-input-wide" placeholder="각 줄 출력값 나열"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q4')">정답 확인</button>
+      <div class="answer-box" id="q4">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.133–134 참고</div>
+        출력 순서: <code>Hello</code> → <code>Python</code> → <code>World</code> → <code>Python</code><br><br>
+        흐름: def f() 정의(실행 안 됨) → print("Hello") → f() 호출 → "Python" 출력 후 복귀 → print("World") → f() 재호출 → "Python" 출력
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 5 · 코드 추적 — 호출 횟수</div>
+      <div class="quiz-q">다음 코드의 실행 결과를 쓰시오.</div>
+      <div class="quiz-sub">def greet():
+    print("Hi!")
+greet()
+greet()
+greet()</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>결과: <input class="blank-input blank-input-wide" placeholder="출력 결과"></div>
+        <div>"Hi!"는 총 몇 번 출력되는가: <input class="blank-input" placeholder="횟수"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q5')">정답 확인</button>
+      <div class="answer-box" id="q5">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.133 참고</div>
+        결과: <code>Hi!</code>가 3줄 출력<br>
+        총 <strong>3번</strong> — greet()가 3번 호출되므로 정의된 print("Hi!")가 각 호출마다 한 번씩 실행된다.
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 6 · 코드 추적 — len() 응용</div>
+      <div class="quiz-q">다음 코드에서 입력값이 <code>hello world</code>일 때 출력 결과를 쓰시오.</div>
+      <div class="quiz-sub">s = input()
+t = s.split()
+print(len(s))
+print(len(t))</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>첫 번째 줄 결과: <input class="blank-input" placeholder="결과"></div>
+        <div>두 번째 줄 결과: <input class="blank-input" placeholder="결과"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q6')">정답 확인</button>
+      <div class="answer-box" id="q6">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.129 참고</div>
+        첫 번째: <strong>11</strong> — "hello world"는 스페이스 포함 11개 문자<br>
+        두 번째: <strong>2</strong> — split()으로 나누면 ["hello", "world"] 리스트 → 원소 2개
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 7 · 응용 — 함수 정의</div>
+      <div class="quiz-q">두 줄에 걸쳐 "안녕하세요"와 "반갑습니다"를 출력하는 함수 <code>greeting()</code>을 정의하고, 이 함수를 두 번 호출하는 코드를 작성하시오.</div>
+      <div class="quiz-inputs">
+        <div><input class="blank-input blank-input-wide" placeholder="def greeting():"></div>
+        <div><input class="blank-input blank-input-wide" placeholder="    print(...)"></div>
+        <div><input class="blank-input blank-input-wide" placeholder="    print(...)"></div>
+        <div><input class="blank-input blank-input-wide" placeholder="호출 1"></div>
+        <div><input class="blank-input blank-input-wide" placeholder="호출 2"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q7')">정답 확인</button>
+      <div class="answer-box" id="q7">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.132–133 참고</div>
+        <div class="code-block">def greeting():
+    print("안녕하세요")
+    print("반갑습니다")
+greeting()
+greeting()</div>
+        실행 결과: "안녕하세요" / "반갑습니다" / "안녕하세요" / "반갑습니다" (총 4줄 출력)
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 8 · 응용 — 오류 찾기</div>
+      <div class="quiz-q">다음 코드에서 오류가 발생하는 위치와 이유를 쓰고, 올바르게 수정하시오.</div>
+      <div class="quiz-sub">say_hello()
+def say_hello():
+    print("Hello!")</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>오류 위치: <input class="blank-input blank-input-wide" placeholder="몇 번째 줄, 무엇이 문제인지"></div>
+        <div>이유: <input class="blank-input blank-input-wide" placeholder="오류 이유"></div>
+        <div>수정 방법: <input class="blank-input blank-input-wide" placeholder="어떻게 수정할지"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q8')">정답 확인</button>
+      <div class="answer-box" id="q8">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.132–133 참고</div>
+        오류 위치: <strong>1번째 줄 — <code>say_hello()</code> 호출</strong><br>
+        이유: 함수는 <strong>정의(def)보다 호출이 먼저 올 수 없다</strong>. 1번 줄에서 say_hello()를 호출할 때 아직 def 블록이 실행되지 않아 함수가 존재하지 않는 상태이다.<br>
+        수정 방법: def 블록을 호출 코드보다 앞으로 이동<br>
+        <div class="code-block" style="margin-top:.5rem">def say_hello():
+    print("Hello!")
+say_hello()</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>Ⅱ-4-①. 함수의 종류와 정의·호출 · 프로그래밍(파이썬) 학습자료</span>
+    <span>교과서 pp.127–134</span>
+  </div>
+</div>
+<script>
+function toggleAns(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('show');
+  const btn = box.previousElementSibling;
+  btn.textContent = box.classList.contains('show') ? '정답 닫기' : '정답 확인';
+}
+</script>
+</body>
+</html>

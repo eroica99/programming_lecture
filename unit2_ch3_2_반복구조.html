@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅱ-3-②. 반복 구조 | 프로그래밍(파이썬) 학습자료</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Malgun Gothic', '맑은 고딕', Apple SD Gothic Neo, sans-serif; font-size: 15px; line-height: 1.75; color: #1a1a1a; background: #f8f8f6; }
+  .top-bar { background: #1a1a1a; color: #fff; font-size: 12px; letter-spacing: .06em; padding: 8px 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .top-bar .grade { color: #aaa; }
+  .container { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .unit-header { border-bottom: 2.5px solid #1a1a1a; padding-bottom: .85rem; margin-bottom: 1.5rem; }
+  .breadcrumb { font-size: 12px; color: #666; margin-bottom: .35rem; letter-spacing: .03em; }
+  .unit-title { font-size: 24px; font-weight: 700; letter-spacing: -.01em; }
+  .page-range-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+  .page-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 3px 10px; border-radius: 3px; border: 1px solid #ccc; color: #555; background: #fff; }
+  .achievement { background: #fff; border-left: 4px solid #1a1a1a; padding: .85rem 1.1rem; margin-bottom: 2rem; font-size: 13.5px; border-radius: 0 4px 4px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .achievement-label { font-size: 10.5px; font-weight: 700; color: #888; letter-spacing: .1em; margin-bottom: .3rem; }
+  .section { margin-bottom: 2.5rem; }
+  .section-header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.1rem; gap: .75rem; flex-wrap: wrap; }
+  .section-title { font-size: 17px; font-weight: 700; }
+  .section-pages { font-size: 11.5px; color: #777; white-space: nowrap; flex-shrink: 0; border: 1px solid #ddd; padding: 2px 8px; border-radius: 3px; background: #fff; }
+  .subsection { margin-bottom: 1.75rem; }
+  .subsection-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: .65rem; gap: .5rem; }
+  .subsection-title { font-size: 13.5px; font-weight: 700; color: #444; letter-spacing: .03em; }
+  .sub-pages { font-size: 11px; color: #999; white-space: nowrap; }
+  .def-box { border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; margin: .6rem 0; background: #fff; font-size: 14px; }
+  .def-box .term { font-weight: 700; margin-bottom: .25rem; color: #1a1a1a; font-size: 14.5px; }
+  .def-box .desc { color: #333; line-height: 1.8; }
+  .def-box .sub { font-size: 12.5px; color: #888; margin-top: .35rem; }
+  .list-item { border: 1px solid #ddd; border-radius: 5px; background: #fff; padding: .9rem 1.1rem; margin-bottom: .65rem; }
+  .list-item-title { font-size: 14.5px; font-weight: 700; margin-bottom: .5rem; color: #1a1a1a; }
+  .list-item-body { font-size: 13.5px; color: #333; line-height: 1.85; }
+  .list-item-body p { margin-bottom: .4rem; }
+  .list-item-body p:last-child { margin-bottom: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: .75rem 0; background: #fff; }
+  th { background: #f0f0ee; font-weight: 700; padding: .6rem .85rem; border: 1px solid #ccc; text-align: left; }
+  td { padding: .55rem .85rem; border: 1px solid #ddd; vertical-align: top; line-height: 1.75; }
+  td.label-cell { font-weight: 700; white-space: nowrap; background: #fafafa; }
+  .code-result { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin: .65rem 0; }
+  .code-3col { display: grid; grid-template-columns: 1.4fr 0.8fr 0.8fr; gap: .65rem; margin: .65rem 0; }
+  @media (max-width: 580px) { .code-result, .code-3col { grid-template-columns: 1fr; } }
+  .code-result-label { font-size: 11px; font-weight: 700; color: #888; letter-spacing: .06em; margin-bottom: .3rem; }
+  .code-block { background: #f4f4f2; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #1a1a1a; white-space: pre; }
+  .result-block { background: #fff; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #333; white-space: pre; }
+  .input-block { background: #f8f8f6; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #555; white-space: pre; }
+  .warn-box { background: #fffbf0; border: 1px solid #e8d89a; border-radius: 5px; padding: .75rem 1rem; font-size: 13.5px; color: #5a4a00; margin: .65rem 0; line-height: 1.8; }
+  .compare-box { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin: .65rem 0; }
+  @media (max-width: 580px) { .compare-box { grid-template-columns: 1fr; } }
+  .compare-item { border: 1px solid #ddd; border-radius: 5px; overflow: hidden; }
+  .compare-label { font-size: 11.5px; font-weight: 700; padding: .4rem .85rem; background: #f0f0ee; border-bottom: 1px solid #ddd; letter-spacing: .04em; color: #444; }
+  .divider { border: none; border-top: 1px solid #ddd; margin: 2rem 0; }
+  code { font-family: 'Consolas', 'D2Coding', monospace; background: #f0f0ee; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+  /* trace table */
+  .trace-table { font-size: 13px; }
+  .trace-table th { text-align: center; }
+  .trace-table td { text-align: center; }
+  .quiz-section { margin-top: 2rem; }
+  .quiz-title { font-size: 17px; font-weight: 700; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.2rem; }
+  .quiz-item { border: 1px solid #ddd; border-radius: 6px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; background: #fff; }
+  .quiz-num { font-size: 11px; font-weight: 700; color: #888; margin-bottom: .5rem; letter-spacing: .06em; }
+  .quiz-q { font-size: 14px; margin-bottom: .85rem; font-weight: 700; color: #1a1a1a; }
+  .quiz-opts { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .8rem; }
+  .quiz-opt { font-size: 13.5px; padding: .4rem .7rem; border-radius: 4px; border: 1px solid #e0e0e0; background: #fafafa; color: #333; }
+  .quiz-sub { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #f4f4f2; color: #333; line-height: 1.75; font-family: 'Consolas', 'D2Coding', monospace; white-space: pre; }
+  .quiz-sub-text { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #fafafa; color: #333; line-height: 1.75; }
+  .quiz-inputs { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .85rem; font-size: 13.5px; color: #333; }
+  .blank-input { border: 1px solid #ccc; border-radius: 4px; padding: .3rem .65rem; font-size: 13.5px; min-width: 100px; font-family: 'Consolas', 'D2Coding', monospace; color: #1a1a1a; background: #fff; }
+  .blank-input:focus { outline: 2px solid #1a1a1a; outline-offset: 1px; }
+  .blank-input-wide { min-width: 200px; }
+  .ans-btn { font-size: 12.5px; padding: .38rem 1rem; border-radius: 4px; border: 1px solid #bbb; background: #fff; cursor: pointer; color: #555; font-family: inherit; }
+  .ans-btn:hover { background: #f0f0ee; }
+  .answer-box { display: none; margin-top: .8rem; padding: .75rem 1rem; border-radius: 4px; font-size: 13.5px; border: 1px solid #ccc; background: #f8f8f6; color: #333; line-height: 1.85; }
+  .answer-box.show { display: block; }
+  .ans-label { font-weight: 700; margin-bottom: .3rem; color: #1a1a1a; }
+  .ans-ref { font-size: 11.5px; color: #888; margin-bottom: .4rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 11.5px; color: #aaa; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .top-bar { display: none; }
+    .container { padding: 1rem; }
+    .ans-btn { display: none; }
+    .answer-box { display: block !important; border: 1px solid #ccc; }
+    .blank-input { border-bottom: 1px solid #999; border-top: none; border-left: none; border-right: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <span style="font-weight:600">프로그래밍(파이썬) · 학습자료</span>
+  <span class="grade">고등학교 2학년</span>
+</div>
+<div class="container">
+
+  <div class="unit-header">
+    <div class="breadcrumb">Ⅱ. 프로그래밍의 기초 &gt; 중단원 3. 제어 구조 &gt; ② 반복 구조</div>
+    <div class="unit-title">반복 구조</div>
+    <div class="page-range-bar">
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        교과서 pp.109–118
+      </span>
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        while: pp.109–111 &nbsp;·&nbsp; for+range: pp.112–116 &nbsp;·&nbsp; continue/break: pp.117–118
+      </span>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-label">성취기준</div>
+    <p><strong>[프그 02-04]</strong> 순차, 선택, 반복의 제어 구조를 이해하고, 문제 상황에 알맞은 제어 구조를 선택하여 이를 적용한 프로그램을 작성할 수 있다.</p>
+  </div>
+
+  <!-- ══ 섹션 1. while ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">1. while ~ 반복 구조</div>
+      <span class="section-pages">교과서 pp.109–111</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">형식과 동작 방식</div>
+        <span class="sub-pages">p.109</span>
+      </div>
+      <div class="def-box">
+        <div class="term">반복 구조</div>
+        <div class="desc">특별한 조건이나 상황에 따라 특별한 작업이나 처리를 <strong>반복해서 실행</strong>하는 구조이다.</div>
+      </div>
+      <div class="compare-box" style="margin-top:.75rem">
+        <div class="compare-item">
+          <div class="compare-label">형식</div>
+          <div class="code-block">while 조건식:
+    실행 1
+    실행 2</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">if 와의 차이</div>
+          <div class="code-block">if:    True이면 한 번만 실행
+while: True인 동안 계속 반복
+
+조건이 False가 되면 반복 종료</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        <strong>무한 루프 주의:</strong> 반복 조건이 절대 False가 되지 않으면 프로그램이 영원히 실행된다. 반복 블록 안에서 반드시 조건을 변화시키는 코드(예: <code>i = i + 1</code>)가 있어야 한다.
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 1부터 n까지 출력</div>
+        <span class="sub-pages">p.110</span>
+      </div>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">n = int(input())
+i = 1
+while i <= n:
+    print(i)
+    i = i + 1</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">3</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">1
+2
+3</div>
+        </div>
+      </div>
+      <table class="trace-table" style="margin-top:.65rem">
+        <tr><th>반복 횟수</th><th>i 값 (진입 시)</th><th>조건 i&lt;=3</th><th>출력</th><th>i 값 (실행 후)</th></tr>
+        <tr><td>1회</td><td>1</td><td>True</td><td>1</td><td>2</td></tr>
+        <tr><td>2회</td><td>2</td><td>True</td><td>2</td><td>3</td></tr>
+        <tr><td>3회</td><td>3</td><td>True</td><td>3</td><td>4</td></tr>
+        <tr><td>종료</td><td>4</td><td>False</td><td>—</td><td>—</td></tr>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 별 n개 한 줄 출력</div>
+        <span class="sub-pages">p.111</span>
+      </div>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">n = int(input())
+i = 1
+while i <= n:
+    print("*", end="")
+    i = i + 1</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">5</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">*****</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ <code>end=""</code>로 줄 바꿈 없이 이어서 출력</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 섹션 2. for + range ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">2. for ~ 반복 구조와 range()</div>
+      <span class="section-pages">교과서 pp.112–116</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">형식과 range() 함수</div>
+        <span class="sub-pages">p.112</span>
+      </div>
+      <div class="compare-box">
+        <div class="compare-item">
+          <div class="compare-label">형식</div>
+          <div class="code-block">for 변수 in 수열/리스트:
+    실행 1
+    실행 2</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">while과의 차이</div>
+          <div class="code-block">while: 조건이 True인 동안 반복
+       → 횟수 제한 없음
+
+for:   수열/리스트의 개수만큼만 반복
+       → 횟수가 정해져 있음</div>
+        </div>
+      </div>
+
+      <p style="font-size:13.5px;color:#333;margin:.75rem 0 .5rem"><code>range()</code> 함수는 일정한 차이값을 가진 정수 수열을 만든다.</p>
+      <table>
+        <tr><th style="width:12rem">형식</th><th>의미</th><th>생성 수열 예시</th></tr>
+        <tr>
+          <td class="label-cell"><code>range(n)</code></td>
+          <td>0부터 n-1까지 1씩 증가</td>
+          <td><code>range(3)</code> → 0, 1, 2</td>
+        </tr>
+        <tr>
+          <td class="label-cell"><code>range(a, b)</code></td>
+          <td>a부터 b-1까지 1씩 증가</td>
+          <td><code>range(1, 4)</code> → 1, 2, 3</td>
+        </tr>
+        <tr>
+          <td class="label-cell"><code>range(a, b, k)</code></td>
+          <td>a부터 b 미만, k씩 증가(또는 감소)</td>
+          <td><code>range(1, 10, 2)</code> → 1, 3, 5, 7, 9<br><code>range(5, -1, -1)</code> → 5, 4, 3, 2, 1, 0</td>
+        </tr>
+      </table>
+      <div class="warn-box" style="margin-top:.5rem">
+        <code>range(a, b)</code>에서 <strong>b는 포함되지 않는다.</strong> 1부터 n까지 반복하려면 <code>range(1, n+1)</code>을 사용해야 한다.
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 1부터 n까지 출력 (while과 비교)</div>
+        <span class="sub-pages">p.113</span>
+      </div>
+      <div class="compare-box">
+        <div class="compare-item">
+          <div class="compare-label">while 방식</div>
+          <div class="code-block">n = int(input())
+i = 1
+while i <= n:
+    print(i)
+    i = i + 1</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">for 방식</div>
+          <div class="code-block">n = int(input())
+for i in range(1, n+1):
+    print(i)</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.3rem">※ 두 코드 모두 같은 결과. for 방식이 더 간결하다.</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 리스트 순회</div>
+        <span class="sub-pages">p.114</span>
+      </div>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">t = input().split()
+for s in t:
+    print(s)</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">hello python world</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">hello
+python
+world</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 리스트 역순 출력 + append()</div>
+        <span class="sub-pages">pp.115–116</span>
+      </div>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드 (역순)</div>
+          <div class="code-block">d = list(map(int, input().split()))
+n = len(d)
+for i in range(n-1, -1, -1):
+    print(d[i])</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">1 2 3 4 5</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">5
+4
+3
+2
+1</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ <code>range(n-1, -1, -1)</code> → n-1, n-2, ..., 1, 0 순서 (감소)</p>
+
+      <div class="code-3col" style="margin-top:.75rem">
+        <div>
+          <div class="code-result-label">코드 (append로 입력)</div>
+          <div class="code-block">n = int(input())
+d = []
+for i in range(n):
+    d.append(int(input()))
+for i in range(n):
+    print(d[i], end=" ")</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">3
+10
+20
+30</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">10 20 30</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ <code>d = []</code> — 빈 리스트 생성 &nbsp;·&nbsp; <code>d.append(값)</code> — 리스트 마지막에 값 추가</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 섹션 3. continue / break ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">3. continue와 break</div>
+      <span class="section-pages">교과서 pp.117–118</span>
+    </div>
+
+    <div class="list-item">
+      <div class="list-item-title">continue — 다음 반복으로 건너뜀</div>
+      <div class="list-item-body">
+        <p>반복 실행 도중 <code>continue</code>가 실행되면 <strong>반복 블록의 남은 부분을 실행하지 않고</strong> 다음 반복으로 건너뛴다. 반복 자체는 계속된다. (p.117)</p>
+        <div class="code-3col" style="margin-top:.5rem">
+          <div>
+            <div class="code-result-label">코드 (3의 배수 제외)</div>
+            <div class="code-block">n = int(input())
+for i in range(1, n+1):
+    if (i % 3) == 0:
+        continue
+    print(i, end=" ")</div>
+          </div>
+          <div>
+            <div class="code-result-label">입력</div>
+            <div class="input-block">10</div>
+          </div>
+          <div>
+            <div class="code-result-label">결과</div>
+            <div class="result-block">1 2 4 5 7 8 10</div>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:#666;margin-top:.35rem">※ i=3, 6, 9일 때 continue → print 건너뜀. 나머지는 정상 출력</p>
+      </div>
+    </div>
+
+    <div class="list-item">
+      <div class="list-item-title">break — 반복 전체 중단</div>
+      <div class="list-item-body">
+        <p>반복 실행 도중 <code>break</code>가 실행되면 <strong>반복 블록의 남은 부분과 남은 모든 반복</strong>이 중단된다. 반복문을 완전히 빠져나온다. (p.118)</p>
+        <div class="code-3col" style="margin-top:.5rem">
+          <div>
+            <div class="code-result-label">코드 (음수 입력 시 중단)</div>
+            <div class="code-block">while True:
+    n = int(input())
+    if n < 0:
+        break
+    print(n)</div>
+          </div>
+          <div>
+            <div class="code-result-label">입력</div>
+            <div class="input-block">3
+0
+-2</div>
+          </div>
+          <div>
+            <div class="code-result-label">결과</div>
+            <div class="result-block">3
+0</div>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:#666;margin-top:.35rem">※ <code>while True:</code> — 조건식이 항상 True이므로 break 없이는 무한 반복</p>
+      </div>
+    </div>
+
+    <div class="subsection" style="margin-top:1rem">
+      <div class="subsection-header">
+        <div class="subsection-title">continue vs break 비교</div>
+        <span class="sub-pages">pp.117–118</span>
+      </div>
+      <table>
+        <tr><th>명령</th><th>동작</th><th>반복 계속 여부</th><th>사용 상황</th></tr>
+        <tr>
+          <td class="label-cell">continue</td>
+          <td>현재 반복의 나머지 코드 건너뜀, 다음 반복으로 이동</td>
+          <td>계속됨</td>
+          <td>특정 경우만 건너뛰고 싶을 때</td>
+        </tr>
+        <tr>
+          <td class="label-cell">break</td>
+          <td>반복 블록 남은 코드 + 남은 모든 반복 중단</td>
+          <td>중단됨</td>
+          <td>특정 조건에서 반복을 완전히 끝낼 때</td>
+        </tr>
+      </table>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ continue, break는 <code>for</code>와 <code>while</code> 반복 구조 모두에서 사용 가능</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 확인 문제 ══ -->
+  <div class="quiz-section">
+    <div class="quiz-title">확인 문제</div>
+
+    <!-- Q1 개념 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 1 · 개념 확인</div>
+      <div class="quiz-q">다음 중 반복 구조에 대한 설명으로 <u>옳지 않은</u> 것은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① while 반복 구조는 조건식이 True인 동안 블록을 계속 반복 실행한다.</div>
+        <div class="quiz-opt">② for 반복 구조는 수열이나 리스트에 들어 있는 데이터의 개수만큼만 반복한다.</div>
+        <div class="quiz-opt">③ continue 명령이 실행되면 반복 블록의 나머지를 건너뛰고 반복이 완전히 종료된다.</div>
+        <div class="quiz-opt">④ break 명령이 실행되면 남은 반복 실행 작업이 모두 중단된다.</div>
+        <div class="quiz-opt">⑤ range(1, 6)은 1, 2, 3, 4, 5의 정수 수열을 만든다.</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q1')">정답 확인</button>
+      <div class="answer-box" id="q1">
+        <div class="ans-label">정답: ③</div>
+        <div class="ans-ref">교과서 p.117 참고</div>
+        <code>continue</code>는 현재 반복의 나머지 부분을 건너뛰고 <strong>다음 반복으로 이동</strong>한다. 반복이 완전히 종료되지는 않는다. 반복을 완전히 종료하는 것은 <code>break</code>이다.
+      </div>
+    </div>
+
+    <!-- Q2 range -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 2 · range() 이해</div>
+      <div class="quiz-q">다음 각 range() 표현이 생성하는 수열을 쓰시오.</div>
+      <div class="quiz-inputs">
+        <div><code>range(5)</code> → <input class="blank-input blank-input-wide" placeholder="생성 수열"></div>
+        <div><code>range(2, 8)</code> → <input class="blank-input blank-input-wide" placeholder="생성 수열"></div>
+        <div><code>range(0, 10, 3)</code> → <input class="blank-input blank-input-wide" placeholder="생성 수열"></div>
+        <div><code>range(5, 0, -1)</code> → <input class="blank-input blank-input-wide" placeholder="생성 수열"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q2')">정답 확인</button>
+      <div class="answer-box" id="q2">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.112 참고</div>
+        <code>range(5)</code> → <strong>0, 1, 2, 3, 4</strong> (0부터 4까지)<br>
+        <code>range(2, 8)</code> → <strong>2, 3, 4, 5, 6, 7</strong> (2부터 7까지, 8 미포함)<br>
+        <code>range(0, 10, 3)</code> → <strong>0, 3, 6, 9</strong> (0부터 3씩 증가, 10 미만)<br>
+        <code>range(5, 0, -1)</code> → <strong>5, 4, 3, 2, 1</strong> (5부터 1씩 감소, 0 미포함)
+      </div>
+    </div>
+
+    <!-- Q3 개념 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 3 · 빈칸 완성</div>
+      <div class="quiz-q">빈칸 ㉠~㉢에 알맞은 말을 쓰시오.</div>
+      <div class="quiz-sub-text" style="line-height:1.9">
+        반복 구조 안에서 ( ㉠ )가 실행되면 반복 블록의 남은 부분을 실행하지 않고 다음 반복으로 건너뛴다. 반면 ( ㉡ )가 실행되면 남은 반복 실행이 모두 중단된다. 두 명령 모두 ( ㉢ ) 반복 구조와 for 반복 구조 안에서 사용할 수 있다.
+      </div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>㉠: <input class="blank-input" placeholder="명령어"></div>
+        <div>㉡: <input class="blank-input" placeholder="명령어"></div>
+        <div>㉢: <input class="blank-input" placeholder="반복 구조"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q3')">정답 확인</button>
+      <div class="answer-box" id="q3">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.117–118 참고</div>
+        ㉠ <strong>continue</strong> — 다음 반복으로 건너뜀<br>
+        ㉡ <strong>break</strong> — 반복 전체 중단<br>
+        ㉢ <strong>while</strong> — while과 for 모두에서 사용 가능
+      </div>
+    </div>
+
+    <!-- Q4 코드 추적 while -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 4 · 코드 추적 (while)</div>
+      <div class="quiz-q">다음 코드의 출력 결과를 쓰시오. (입력값: 4)</div>
+      <div class="quiz-sub">n = int(input())
+s = 0
+i = 1
+while i <= n:
+    s = s + i
+    i = i + 1
+print(s)</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>결과: <input class="blank-input" placeholder="결과"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q4')">정답 확인</button>
+      <div class="answer-box" id="q4">
+        <div class="ans-label">정답: 10</div>
+        <div class="ans-ref">교과서 pp.109–110 참고</div>
+        변수 추적표:
+        <table class="trace-table" style="margin-top:.5rem">
+          <tr><th>i</th><th>조건 i≤4</th><th>s = s + i</th><th>i = i+1</th></tr>
+          <tr><td>1</td><td>True</td><td>0+1=1</td><td>2</td></tr>
+          <tr><td>2</td><td>True</td><td>1+2=3</td><td>3</td></tr>
+          <tr><td>3</td><td>True</td><td>3+3=6</td><td>4</td></tr>
+          <tr><td>4</td><td>True</td><td>6+4=10</td><td>5</td></tr>
+          <tr><td>5</td><td>False</td><td colspan="2">종료 → print(10)</td></tr>
+        </table>
+        1+2+3+4 = <strong>10</strong>
+      </div>
+    </div>
+
+    <!-- Q5 코드 추적 for+continue -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 5 · 코드 추적 (for + continue)</div>
+      <div class="quiz-q">다음 코드의 출력 결과를 쓰시오. (입력값: 10)</div>
+      <div class="quiz-sub">n = int(input())
+for i in range(1, n+1):
+    if (i % 3) == 0:
+        continue
+    print(i, end=" ")</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>결과: <input class="blank-input blank-input-wide" placeholder="결과"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q5')">정답 확인</button>
+      <div class="answer-box" id="q5">
+        <div class="ans-label">정답: <code>1 2 4 5 7 8 10</code></div>
+        <div class="ans-ref">교과서 p.117 참고</div>
+        i = 1~10 중 3의 배수(3, 6, 9)일 때 continue → print 건너뜀<br>
+        나머지 1, 2, 4, 5, 7, 8, 10은 출력됨
+      </div>
+    </div>
+
+    <!-- Q6 코드 추적 while+break -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 6 · 코드 추적 (while + break)</div>
+      <div class="quiz-q">다음 코드에서 입력값이 순서대로 <code>5, 2, 6, -1, 3</code>일 때 출력 결과를 쓰시오.</div>
+      <div class="quiz-sub">while True:
+    n = int(input())
+    if n < 0:
+        break
+    print(n)</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>결과: <input class="blank-input blank-input-wide" placeholder="결과 (여러 줄)"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q6')">정답 확인</button>
+      <div class="answer-box" id="q6">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.118 참고</div>
+        출력: <code>5</code>, <code>2</code>, <code>6</code> (각각 한 줄씩)<br><br>
+        흐름: n=5 → 음수 아님 → 5 출력 / n=2 → 2 출력 / n=6 → 6 출력 / n=-1 → break → 반복 종료<br>
+        n=3은 입력받지 못함 (break 이후 실행 없음)
+      </div>
+    </div>
+
+    <!-- Q7 응용 — 코드 완성 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 7 · 응용 — 코드 완성</div>
+      <div class="quiz-q">1부터 n까지 짝수의 합을 구하는 프로그램을 완성하시오.</div>
+      <div class="quiz-sub">n = int(input())
+s = 0
+for i in range( ㉠ , ㉡ ):
+    s = s + i
+print(s)</div>
+      <div class="quiz-sub-text" style="font-size:12.5px;color:#666">예) n=10 입력 시 2+4+6+8+10 = 30 출력</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>㉠: <input class="blank-input" placeholder="range 시작"></div>
+        <div>㉡: <input class="blank-input" placeholder="range 끝, 증가폭"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q7')">정답 확인</button>
+      <div class="answer-box" id="q7">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.112–113 응용</div>
+        ㉠ <strong>2</strong>, ㉡ <strong>n+1, 2</strong><br>
+        완성: <code>for i in range(2, n+1, 2):</code><br><br>
+        range(2, 11, 2) → 2, 4, 6, 8, 10 → 합 = 30<br><br>
+        다른 방법 (continue 사용):
+        <div class="code-block" style="margin-top:.5rem">for i in range(1, n+1):
+    if i % 2 != 0:
+        continue
+    s = s + i</div>
+      </div>
+    </div>
+
+    <!-- Q8 응용 — 오류 수정 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 8 · 응용 — 오류 수정</div>
+      <div class="quiz-q">다음 코드는 1부터 n까지 출력하려는 의도로 작성되었으나 무한 루프가 발생한다. 원인을 찾고 올바르게 수정하시오.</div>
+      <div class="quiz-sub">n = int(input())
+i = 1
+while i <= n:
+    print(i)</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>무한 루프 원인: <input class="blank-input blank-input-wide" placeholder="원인 설명"></div>
+        <div>수정 코드 (추가할 줄): <input class="blank-input blank-input-wide" placeholder="추가할 코드"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q8')">정답 확인</button>
+      <div class="answer-box" id="q8">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.109 참고</div>
+        원인: <strong>i 값을 증가시키는 코드(<code>i = i + 1</code>)가 없어</strong> i가 항상 1인 상태로 조건 <code>i &lt;= n</code>이 영원히 True이다.<br><br>
+        수정 코드 (while 블록 안 마지막에 추가): <strong><code>    i = i + 1</code></strong><br><br>
+        올바른 코드:
+        <div class="code-block" style="margin-top:.5rem">n = int(input())
+i = 1
+while i <= n:
+    print(i)
+    i = i + 1</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>Ⅱ-3-②. 반복 구조 · 프로그래밍(파이썬) 학습자료</span>
+    <span>교과서 pp.109–118</span>
+  </div>
+</div>
+<script>
+function toggleAns(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('show');
+  const btn = box.previousElementSibling;
+  btn.textContent = box.classList.contains('show') ? '정답 닫기' : '정답 확인';
+}
+</script>
+</body>
+</html>

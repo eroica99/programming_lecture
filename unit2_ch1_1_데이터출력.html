@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅱ-1-①. 데이터 출력 | 프로그래밍(파이썬) 학습자료</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Apple SD Gothic Neo, sans-serif;
+    font-size: 15px; line-height: 1.75; color: #1a1a1a; background: #f8f8f6;
+  }
+  .top-bar {
+    background: #1a1a1a; color: #fff; font-size: 12px;
+    letter-spacing: .06em; padding: 8px 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .top-bar .grade { color: #aaa; }
+  .container { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* 헤더 */
+  .unit-header { border-bottom: 2.5px solid #1a1a1a; padding-bottom: .85rem; margin-bottom: 1.5rem; }
+  .breadcrumb { font-size: 12px; color: #666; margin-bottom: .35rem; letter-spacing: .03em; }
+  .unit-title { font-size: 24px; font-weight: 700; letter-spacing: -.01em; }
+  .page-range-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; padding: 3px 10px; border-radius: 3px;
+    border: 1px solid #ccc; color: #555; background: #fff;
+  }
+
+  /* 성취기준 */
+  .achievement {
+    background: #fff; border-left: 4px solid #1a1a1a;
+    padding: .85rem 1.1rem; margin-bottom: 2rem; font-size: 13.5px;
+    border-radius: 0 4px 4px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .achievement-label { font-size: 10.5px; font-weight: 700; color: #888; letter-spacing: .1em; margin-bottom: .3rem; }
+  .achievement p { margin-bottom: .3rem; }
+  .achievement p:last-child { margin-bottom: 0; }
+
+  /* 섹션 */
+  .section { margin-bottom: 2.5rem; }
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem;
+    margin-bottom: 1.1rem; gap: .75rem; flex-wrap: wrap;
+  }
+  .section-title { font-size: 17px; font-weight: 700; }
+  .section-pages {
+    font-size: 11.5px; color: #777; white-space: nowrap; flex-shrink: 0;
+    border: 1px solid #ddd; padding: 2px 8px; border-radius: 3px; background: #fff;
+  }
+  .subsection { margin-bottom: 1.75rem; }
+  .subsection-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: .65rem; gap: .5rem;
+  }
+  .subsection-title { font-size: 13.5px; font-weight: 700; color: #444; letter-spacing: .03em; }
+  .sub-pages { font-size: 11px; color: #999; white-space: nowrap; }
+
+  /* 정의 박스 */
+  .def-box {
+    border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem;
+    margin: .6rem 0; background: #fff; font-size: 14px;
+  }
+  .def-box .term { font-weight: 700; margin-bottom: .25rem; color: #1a1a1a; font-size: 14.5px; }
+  .def-box .desc { color: #333; line-height: 1.8; }
+  .def-box .sub { font-size: 12.5px; color: #888; margin-top: .35rem; }
+
+  /* 세로 나열 항목 */
+  .list-item {
+    border: 1px solid #ddd; border-radius: 5px; background: #fff;
+    padding: .9rem 1.1rem; margin-bottom: .65rem;
+  }
+  .list-item-title { font-size: 14.5px; font-weight: 700; margin-bottom: .5rem; color: #1a1a1a; }
+  .list-item-body { font-size: 13.5px; color: #333; line-height: 1.85; }
+  .list-item-body p { margin-bottom: .4rem; }
+  .list-item-body p:last-child { margin-bottom: 0; }
+
+  /* 표 */
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: .75rem 0; background: #fff; }
+  th { background: #f0f0ee; font-weight: 700; padding: .6rem .85rem; border: 1px solid #ccc; text-align: left; }
+  td { padding: .55rem .85rem; border: 1px solid #ddd; vertical-align: top; line-height: 1.75; }
+  td.label-cell { font-weight: 700; white-space: nowrap; background: #fafafa; }
+
+  /* 코드 블록 */
+  .code-block {
+    background: #f4f4f2; border: 1px solid #ddd; border-radius: 5px;
+    padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace;
+    font-size: 13.5px; line-height: 1.9; color: #1a1a1a; margin: .65rem 0;
+    white-space: pre;
+  }
+  /* 코드+결과 나란히 */
+  .code-result {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: .65rem; margin: .65rem 0;
+  }
+  @media (max-width: 560px) { .code-result { grid-template-columns: 1fr; } }
+  .code-result-label {
+    font-size: 11px; font-weight: 700; color: #888;
+    letter-spacing: .06em; margin-bottom: .3rem;
+  }
+  .result-block {
+    background: #fff; border: 1px solid #ddd; border-radius: 5px;
+    padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace;
+    font-size: 13.5px; line-height: 1.9; color: #333; white-space: pre;
+  }
+
+  /* 주의 박스 */
+  .warn-box {
+    background: #fffbf0; border: 1px solid #e8d89a; border-radius: 5px;
+    padding: .75rem 1rem; font-size: 13.5px; color: #5a4a00; margin: .65rem 0; line-height: 1.8;
+  }
+  .warn-box strong { color: #3a2e00; }
+
+  /* print 파라미터 표 */
+  .param-table td.param-name {
+    font-family: 'Consolas', 'D2Coding', monospace;
+    font-weight: 700; width: 6rem; white-space: nowrap; background: #fafafa;
+  }
+  .param-table td.param-default {
+    font-family: 'Consolas', 'D2Coding', monospace;
+    width: 7rem; color: #555;
+  }
+
+  /* 이스케이프 시퀀스 표 */
+  .esc-table td.esc-code {
+    font-family: 'Consolas', 'D2Coding', monospace;
+    font-weight: 700; width: 4rem; text-align: center;
+  }
+
+  /* 구분선 */
+  .divider { border: none; border-top: 1px solid #ddd; margin: 2rem 0; }
+
+  /* 확인 문제 */
+  .quiz-section { margin-top: 2rem; }
+  .quiz-title { font-size: 17px; font-weight: 700; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.2rem; }
+  .quiz-item { border: 1px solid #ddd; border-radius: 6px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; background: #fff; }
+  .quiz-num { font-size: 11px; font-weight: 700; color: #888; margin-bottom: .5rem; letter-spacing: .06em; }
+  .quiz-q { font-size: 14px; margin-bottom: .85rem; font-weight: 700; color: #1a1a1a; }
+  .quiz-opts { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .8rem; }
+  .quiz-opt { font-size: 13.5px; padding: .4rem .7rem; border-radius: 4px; border: 1px solid #e0e0e0; background: #fafafa; color: #333; }
+  .quiz-sub { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #fafafa; color: #333; line-height: 1.75; font-family: 'Consolas', 'D2Coding', monospace; }
+  .quiz-sub-text { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #fafafa; color: #333; line-height: 1.75; }
+  .quiz-inputs { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .85rem; font-size: 13.5px; color: #333; }
+  .blank-input {
+    border: 1px solid #ccc; border-radius: 4px; padding: .3rem .65rem;
+    font-size: 13.5px; min-width: 100px; font-family: inherit; color: #1a1a1a; background: #fff;
+  }
+  .blank-input:focus { outline: 2px solid #1a1a1a; outline-offset: 1px; }
+  .blank-input-code { font-family: 'Consolas', 'D2Coding', monospace; }
+  .ans-btn {
+    font-size: 12.5px; padding: .38rem 1rem; border-radius: 4px;
+    border: 1px solid #bbb; background: #fff; cursor: pointer; color: #555; font-family: inherit;
+  }
+  .ans-btn:hover { background: #f0f0ee; }
+  .answer-box {
+    display: none; margin-top: .8rem; padding: .75rem 1rem; border-radius: 4px;
+    font-size: 13.5px; border: 1px solid #ccc; background: #f8f8f6; color: #333; line-height: 1.85;
+  }
+  .answer-box.show { display: block; }
+  .ans-label { font-weight: 700; margin-bottom: .3rem; color: #1a1a1a; }
+  .ans-ref { font-size: 11.5px; color: #888; margin-bottom: .4rem; }
+  code { font-family: 'Consolas', 'D2Coding', monospace; background: #f0f0ee; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+
+  /* 푸터 */
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 11.5px; color: #aaa; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .top-bar { display: none; }
+    .container { padding: 1rem; }
+    .ans-btn { display: none; }
+    .answer-box { display: block !important; border: 1px solid #ccc; }
+    .blank-input { border-bottom: 1px solid #999; border-top: none; border-left: none; border-right: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span style="font-weight:600">프로그래밍(파이썬) · 학습자료</span>
+  <span class="grade">고등학교 2학년</span>
+</div>
+
+<div class="container">
+
+  <!-- 단원 헤더 -->
+  <div class="unit-header">
+    <div class="breadcrumb">Ⅱ. 프로그래밍의 기초 &gt; 중단원 1. 데이터 입출력 &gt; ① 데이터 출력</div>
+    <div class="unit-title">자료형과 데이터 출력</div>
+    <div class="page-range-bar">
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        교과서 pp.43–51
+      </span>
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        자료형: pp.43–46 &nbsp;·&nbsp; print(): pp.47–51
+      </span>
+    </div>
+  </div>
+
+  <!-- 성취기준 -->
+  <div class="achievement">
+    <div class="achievement-label">성취기준</div>
+    <p><strong>[프그 02-01]</strong> 변수와 자료형의 개념과 특징을 이해하고, 구분하여 지정할 수 있으며, 이들을 사용한 프로그램을 작성할 수 있다.</p>
+    <p><strong>[프그 02-02]</strong> 입력과 출력의 기능을 이해하고, 형식을 지정하여 데이터를 입력하고 출력할 수 있다.</p>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       섹션 1. 자료형
+  ══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">1. 자료형</div>
+      <span class="section-pages">교과서 pp.43–46</span>
+    </div>
+
+    <!-- 자료형 개념 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">자료형의 개념</div>
+        <span class="sub-pages">p.43</span>
+      </div>
+      <div class="def-box">
+        <div class="term">자료형 (data type)</div>
+        <div class="desc">데이터의 종류와 특성에 따라 구분하는 이름이다. 프로그래밍을 통하여 입출력되는 다양한 데이터는 종류와 특성에 따라 다른 형태로 컴퓨터 내부에 저장·처리되므로, 정확하게 표현해야 한다.</div>
+        <div class="sub">컴퓨터 내부에서는 모든 데이터를 2진수(0 또는 1)로 저장·처리하며, 자료형에 따라 저장 방식이 달라진다.</div>
+      </div>
+    </div>
+
+    <!-- 자료형 4종류 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">자료형의 종류</div>
+        <span class="sub-pages">pp.43–44 [표Ⅱ-1]</span>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">정수 (int)</div>
+        <div class="list-item-body">
+          <p>소수점 아래에 작은 수가 없는 딱 떨어지는 값으로, <strong>음의 정수, 0, 양의 정수</strong>를 의미한다.</p>
+          <p>사칙 연산이 서로 가능한 <strong>2진수 형태</strong>로 바뀌어 컴퓨터 내부에 저장된다.</p>
+          <p>파이썬 표현 예시: <code>-1</code>, <code>0</code>, <code>1</code>, <code>2</code>, <code>100</code></p>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">문자열 (str)</div>
+        <div class="list-item-body">
+          <p>문자를 <strong>1개 이상 순서대로 나열한 것</strong>이다. 문자 한 개는 아스키(ASCII) 또는 유니코드(unicode) 체계에 따라 특별한 코드로 변환되어 저장된다.</p>
+          <p>파이썬에서는 문자와 문자열을 따로 구분하지 않고, 문자도 문자열로 저장하여 처리한다.</p>
+          <p>파이썬 표현: <strong>큰따옴표(")</strong> 또는 <strong>작은따옴표(')</strong>로 묶어 표현한다.</p>
+          <p>파이썬 표현 예시: <code>"hello"</code>, <code>"1"</code>, <code>"123"</code>, <code>'a'</code>, <code>'A'</code></p>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">실수 (float)</div>
+        <div class="list-item-body">
+          <p><strong>소수점을 사용해 표현한 수</strong>로, 소수점 아래에 있는 작은 수까지 표현한다.</p>
+          <p>2진수 형태로 변환되어 저장되지만, 정수와는 다른 방식(IEEE-754 표준)으로 저장된다.</p>
+          <p>파이썬 표현: 소수점과 함께 부호와 숫자를 붙여 쓴다.</p>
+          <p>파이썬 표현 예시: <code>1.0</code>, <code>1.414</code>, <code>-2.718</code>, <code>3.14</code></p>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">논릿값 (bool)</div>
+        <div class="list-item-body">
+          <p>수학자 조지 불(George Boole)이 만든 개념으로, <strong>참(True) 또는 거짓(False)</strong> 두 가지 값만 가진다.</p>
+          <p><code>and</code>, <code>or</code>, <code>not</code>과 같은 논리 연산으로 계산되며, 논리 연산의 결과도 논릿값이다.</p>
+          <p>일반적으로 참은 정숫값 <strong>1</strong>, 거짓은 정숫값 <strong>0</strong>으로 저장된다. 0이 아닌 모든 값은 참으로 계산한다.</p>
+          <p>파이썬 표현: <code>True</code>, <code>False</code>만 사용한다. (첫 글자 반드시 대문자)</p>
+          <p>선택 실행(if)과 반복 실행(while)과 같은 프로그램 실행 제어에 사용된다.</p>
+        </div>
+      </div>
+
+      <table style="margin-top:.5rem">
+        <tr><th style="width:5rem">자료형</th><th>설명</th><th>파이썬 표현 예시</th></tr>
+        <tr><td class="label-cell">정수</td><td>음의 정수, 0, 양의 정수</td><td><code>-1</code>, <code>0</code>, <code>1</code>, <code>100</code></td></tr>
+        <tr><td class="label-cell">문자열</td><td>문자를 1개 이상 나열한 것</td><td><code>"hello"</code>, <code>'A'</code>, <code>"123"</code></td></tr>
+        <tr><td class="label-cell">실수</td><td>소수점을 사용해 표현한 수</td><td><code>1.0</code>, <code>-2.718</code>, <code>3.14</code></td></tr>
+        <tr><td class="label-cell">논릿값</td><td>참, 거짓</td><td><code>True</code>, <code>False</code></td></tr>
+      </table>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ <code>1</code>(정수), <code>"1"</code>(문자열), <code>1.0</code>(실수)은 각각 서로 다른 자료형이다. (p.45)</p>
+    </div>
+
+    <!-- 자료형 혼용 주의 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">자료형 혼용 시 주의 사항</div>
+        <span class="sub-pages">p.45</span>
+      </div>
+      <div class="warn-box">
+        자료형이 다른 데이터를 서로 계산하거나 잘못 처리하면 <strong>프로그램 실행 중 오류</strong>가 발생하거나 예상과 전혀 다른 결과가 나타날 수 있다.
+      </div>
+      <table>
+        <tr><th>코드 예시</th><th>결과</th><th>이유</th></tr>
+        <tr>
+          <td><code>print(1 + "1")</code></td>
+          <td style="color:#c0392b">오류 발생</td>
+          <td>정수와 문자열은 <code>+</code>로 계산할 수 없다.</td>
+        </tr>
+        <tr>
+          <td><code>print(3 * "hello")</code></td>
+          <td><code>hellohellohello</code></td>
+          <td>문자열을 정숫값만큼 반복한 문자열이 만들어진다.</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 자료형 변환 함수 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">자료형 변환 함수</div>
+        <span class="sub-pages">p.46 [표Ⅱ-3]</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">필요에 따라 데이터를 원하는 자료형으로 변환해야 할 때 사용하는 함수이다.</p>
+      <table>
+        <tr><th style="width:7rem">변환 함수</th><th>변환 내용</th><th>사용 예</th></tr>
+        <tr>
+          <td class="label-cell"><code>int()</code></td>
+          <td>수 또는 문자열을 <strong>정숫값</strong>으로 변환한다.</td>
+          <td><code>int("123")</code> → <code>123</code></td>
+        </tr>
+        <tr>
+          <td class="label-cell"><code>float()</code></td>
+          <td>수 또는 문자열을 <strong>실수</strong>로 변환한다.</td>
+          <td><code>float("3.14")</code> → <code>3.14</code></td>
+        </tr>
+        <tr>
+          <td class="label-cell"><code>str()</code></td>
+          <td>어떤 값을 <strong>문자열</strong>로 변환한다.</td>
+          <td><code>str(123)</code> → <code>"123"</code></td>
+        </tr>
+        <tr>
+          <td class="label-cell"><code>bool()</code></td>
+          <td>수 또는 문자열을 <strong>논릿값</strong>으로 변환한다.</td>
+          <td><code>bool(0)</code> → <code>False</code></td>
+        </tr>
+        <tr>
+          <td class="label-cell"><code>chr()</code></td>
+          <td>정숫값을 <strong>유니코드 문자</strong>로 변환한다.</td>
+          <td><code>chr(65)</code> → <code>'A'</code></td>
+        </tr>
+        <tr>
+          <td class="label-cell"><code>ord()</code></td>
+          <td>유니코드 문자를 <strong>정숫값</strong>으로 변환한다.</td>
+          <td><code>ord('A')</code> → <code>65</code></td>
+        </tr>
+      </table>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ <code>input()</code>으로 입력받은 값은 항상 <strong>문자열</strong>이므로, 정수로 사용하려면 <code>int(input())</code>으로 변환해야 한다.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════
+       섹션 2. print() 함수
+  ══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">2. print() 함수</div>
+      <span class="section-pages">교과서 pp.47–51</span>
+    </div>
+
+    <!-- 기본 형식 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">기본 형식</div>
+        <span class="sub-pages">p.47</span>
+      </div>
+      <div class="def-box">
+        <div class="term">print() 함수</div>
+        <div class="desc">주어진 값을 문자열로 화면에 출력하는 함수이다. 출력 후 기본적으로 새 줄(\n)로 이동한다.</div>
+      </div>
+      <table>
+        <tr><th>형식</th><th>설명</th></tr>
+        <tr><td><code>print(값)</code></td><td>값을 출력한다.</td></tr>
+        <tr><td><code>print(값1, 값2, ...)</code></td><td>여러 값을 스페이스를 사이에 넣어 순서대로 출력한다.</td></tr>
+        <tr><td><code>print(값1, 값2, sep="구분자")</code></td><td>값 사이에 지정한 구분자를 넣어 출력한다.</td></tr>
+        <tr><td><code>print(값, end="끝문자")</code></td><td>출력 후 새 줄 대신 지정한 끝 문자를 출력한다.</td></tr>
+      </table>
+
+      <div class="code-result" style="margin-top:.75rem">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">print(123)
+print("Hello")</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">123
+Hello</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- sep -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">sep — 구분자 지정</div>
+        <span class="sub-pages">pp.48–49</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">
+        출력할 값을 쉼표(,)로 나열하면 기본적으로 <strong>스페이스</strong>를 사이에 넣어 출력한다. <code>sep</code> 매개변수로 구분자를 원하는 문자로 바꿀 수 있다.
+      </p>
+      <table class="param-table">
+        <tr><th>매개변수</th><th>기본값</th><th>설명</th></tr>
+        <tr>
+          <td class="param-name">sep</td>
+          <td class="param-default">" " (스페이스)</td>
+          <td>값과 값 사이에 넣을 구분 문자. <code>""</code>로 설정하면 구분 없이 붙여 출력한다.</td>
+        </tr>
+      </table>
+
+      <div class="code-result">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">print("Hello", "World")
+print(13, 45, 29, sep=":")
+print(13, 45, 29, sep="")
+print("A", "B", "C", sep=",")</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">Hello World
+13:45:29
+134529
+A,B,C</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ <code>""</code>(빈 문자열)은 아무 문자도 없다는 의미이다.</p>
+    </div>
+
+    <!-- end -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">end — 끝 문자 지정</div>
+        <span class="sub-pages">pp.50–51</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">
+        <code>print()</code>는 출력 후 기본적으로 <strong>새 줄(\n)</strong>로 이동한다. <code>end</code> 매개변수로 출력 후 끝 문자를 원하는 문자로 바꿀 수 있다.
+      </p>
+      <table class="param-table">
+        <tr><th>매개변수</th><th>기본값</th><th>설명</th></tr>
+        <tr>
+          <td class="param-name">end</td>
+          <td class="param-default">"\n" (새 줄)</td>
+          <td>값을 모두 출력한 후 마지막에 출력할 문자. <code>""</code>로 설정하면 새 줄 없이 이어서 출력한다.</td>
+        </tr>
+      </table>
+
+      <div class="code-result">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">print("A", end=",")
+print("B", end=",")
+print("C")</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">A,B,C</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.3rem">※ <code>print("A", "B", "C", sep=",")</code>와 동일한 결과이다.</p>
+    </div>
+
+    <!-- 이스케이프 시퀀스 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">이스케이프 시퀀스 (escape sequence)</div>
+        <span class="sub-pages">p.50</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">
+        <strong>백슬래시(\)</strong>와 다른 문자를 함께 사용하여 특별한 처리나 뜻을 표현하는 표기법이다.
+      </p>
+      <table class="esc-table">
+        <tr><th style="text-align:center">표기</th><th>의미</th><th>사용 예</th></tr>
+        <tr>
+          <td class="esc-code">\n</td>
+          <td>새 줄로 바꿈 (new line)</td>
+          <td><code>print("Hello\nWorld")</code> → Hello와 World가 줄 바꿈되어 출력</td>
+        </tr>
+        <tr>
+          <td class="esc-code">\'</td>
+          <td>작은따옴표 문자</td>
+          <td><code>print('it\'s')</code> → <code>it's</code></td>
+        </tr>
+        <tr>
+          <td class="esc-code">\"</td>
+          <td>큰따옴표 문자</td>
+          <td><code>print("\"Hello\"")</code> → <code>"Hello"</code></td>
+        </tr>
+        <tr>
+          <td class="esc-code">\\</td>
+          <td>백슬래시 문자</td>
+          <td><code>print("\\")</code> → <code>\</code></td>
+        </tr>
+      </table>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ 백슬래시(\)와 슬래시(/)는 서로 다른 문자이다. 키보드에 따라 ₩로 표시되기도 한다.</p>
+
+      <div class="code-result" style="margin-top:.75rem">
+        <div>
+          <div class="code-result-label">sep="\n" 활용 예</div>
+          <div class="code-block">print("Hello", "World", sep="\n")</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">Hello
+World</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- sep vs end 정리 -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">sep과 end 비교 정리</div>
+        <span class="sub-pages">pp.48–51</span>
+      </div>
+      <table>
+        <tr><th>매개변수</th><th>적용 위치</th><th>기본값</th><th>변경 예시</th></tr>
+        <tr>
+          <td class="label-cell">sep</td>
+          <td>값과 값 <strong>사이</strong></td>
+          <td><code>" "</code> (스페이스)</td>
+          <td><code>sep=":"</code>, <code>sep=","</code>, <code>sep=""</code></td>
+        </tr>
+        <tr>
+          <td class="label-cell">end</td>
+          <td>출력 <strong>마지막</strong></td>
+          <td><code>"\n"</code> (새 줄)</td>
+          <td><code>end=","</code>, <code>end=" "</code>, <code>end=""</code></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════
+       확인 문제
+  ══════════════════════════════════════ -->
+  <div class="quiz-section">
+    <div class="quiz-title">확인 문제</div>
+
+    <!-- Q1 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 1</div>
+      <div class="quiz-q">다음 값의 자료형을 〈보기〉에서 골라 쓰시오.</div>
+      <p style="font-size:13px;color:#888;margin-bottom:.65rem">〈보기〉 &nbsp; 정수 &nbsp;·&nbsp; 문자열 &nbsp;·&nbsp; 실수 &nbsp;·&nbsp; 논릿값</p>
+      <table style="margin-bottom:.85rem;font-size:13.5px">
+        <tr><th style="width:50%">값</th><th>자료형</th></tr>
+        <tr><td><code>100</code></td><td><input class="blank-input blank-input-code" placeholder="자료형"></td></tr>
+        <tr><td><code>"100"</code></td><td><input class="blank-input blank-input-code" placeholder="자료형"></td></tr>
+        <tr><td><code>3.14</code></td><td><input class="blank-input blank-input-code" placeholder="자료형"></td></tr>
+        <tr><td><code>True</code></td><td><input class="blank-input blank-input-code" placeholder="자료형"></td></tr>
+        <tr><td><code>'A'</code></td><td><input class="blank-input blank-input-code" placeholder="자료형"></td></tr>
+      </table>
+      <button class="ans-btn" onclick="toggleAns('q1')">정답 확인</button>
+      <div class="answer-box" id="q1">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.43–45 [표Ⅱ-1, 표Ⅱ-2] 참고</div>
+        <code>100</code> → <strong>정수</strong> (소수점 없는 수)<br>
+        <code>"100"</code> → <strong>문자열</strong> (따옴표로 묶였으므로 숫자가 아닌 문자열)<br>
+        <code>3.14</code> → <strong>실수</strong> (소수점이 있는 수)<br>
+        <code>True</code> → <strong>논릿값</strong> (True/False)<br>
+        <code>'A'</code> → <strong>문자열</strong> (파이썬에서는 문자도 문자열로 처리)
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 2</div>
+      <div class="quiz-q">다음 빈칸에 알맞은 자료형 변환 함수를 쓰시오.</div>
+      <div class="quiz-inputs">
+        <div>키보드로 입력받은 값을 정수로 변환하려면: <code>( ㉠ )(input())</code><br>
+          ㉠: <input class="blank-input blank-input-code" placeholder="함수명"></div>
+        <div>정숫값 <code>3.7</code>을 실수로 저장하려면 이미 실수이지만, 문자열 <code>"3.7"</code>을 실수로 변환하려면: <code>( ㉡ )("3.7")</code><br>
+          ㉡: <input class="blank-input blank-input-code" placeholder="함수명"></div>
+        <div>정숫값 <code>100</code>을 문자열로 변환하려면: <code>( ㉢ )(100)</code><br>
+          ㉢: <input class="blank-input blank-input-code" placeholder="함수명"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q2')">정답 확인</button>
+      <div class="answer-box" id="q2">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.46 [표Ⅱ-3] 참고</div>
+        ㉠ <strong>int</strong> — <code>int(input())</code>: 문자열을 정수로 변환<br>
+        ㉡ <strong>float</strong> — <code>float("3.7")</code>: 문자열을 실수로 변환<br>
+        ㉢ <strong>str</strong> — <code>str(100)</code>: 정수를 문자열로 변환
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 3</div>
+      <div class="quiz-q">다음 코드의 실행 결과를 쓰시오.</div>
+      <div class="quiz-sub">print("2026", "06", "15", sep="-")</div>
+      <div class="quiz-sub">print("A", end=" ")<br>print("B", end=" ")<br>print("C")</div>
+      <div class="quiz-sub">print(1, 2, 3, sep="", end="!")</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>① 결과: <input class="blank-input blank-input-code" style="min-width:160px" placeholder="출력 결과"></div>
+        <div>② 결과: <input class="blank-input blank-input-code" style="min-width:160px" placeholder="출력 결과"></div>
+        <div>③ 결과: <input class="blank-input blank-input-code" style="min-width:160px" placeholder="출력 결과"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q3')">정답 확인</button>
+      <div class="answer-box" id="q3">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.48–51 참고</div>
+        ① <code>2026-06-15</code> — sep="-"이므로 값 사이에 하이픈(-) 삽입<br>
+        ② <code>A B C</code> (한 줄) — end=" "이므로 각 print 후 스페이스, 마지막 C는 기본(\n)<br>
+        ③ <code>123!</code> — sep=""이므로 붙여 출력, end="!"이므로 마지막에 느낌표
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 4</div>
+      <div class="quiz-q">다음 중 자료형과 print() 함수에 대한 설명으로 <u>옳지 않은</u> 것은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① 파이썬에서 논릿값은 True와 False만 사용하며 첫 글자는 대문자이다.</div>
+        <div class="quiz-opt">② 파이썬에서 문자와 문자열은 따로 구분하지 않고 모두 문자열로 처리한다.</div>
+        <div class="quiz-opt">③ print() 함수의 sep 기본값은 스페이스(" ")이고, end 기본값은 새 줄("\n")이다.</div>
+        <div class="quiz-opt">④ 정수 1과 문자열 "1"과 실수 1.0은 모두 같은 자료형이다.</div>
+        <div class="quiz-opt">⑤ \n은 출력할 위치를 새 줄로 바꾸는 이스케이프 시퀀스이다.</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q4')">정답 확인</button>
+      <div class="answer-box" id="q4">
+        <div class="ans-label">정답: ④</div>
+        <div class="ans-ref">교과서 p.45 참고</div>
+        <code>1</code>(정수), <code>"1"</code>(문자열), <code>1.0</code>(실수)은 각각 <strong>서로 다른 자료형</strong>이다. 컴퓨터 내부에서 각각 다른 형태로 저장·처리된다. 자료형이 다른 데이터를 혼용하면 오류가 발생하거나 예상치 못한 결과가 나타날 수 있다.
+      </div>
+    </div>
+
+  </div><!-- /.quiz-section -->
+
+  <!-- 푸터 -->
+  <div class="footer">
+    <span>Ⅱ-1-①. 자료형과 데이터 출력 · 프로그래밍(파이썬) 학습자료</span>
+    <span>교과서 pp.43–51</span>
+  </div>
+
+</div><!-- /.container -->
+
+<script>
+function toggleAns(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('show');
+  const btn = box.previousElementSibling;
+  btn.textContent = box.classList.contains('show') ? '정답 닫기' : '정답 확인';
+}
+</script>
+</body>
+</html>

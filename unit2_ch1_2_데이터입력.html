@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅱ-1-②. 데이터 입력 | 프로그래밍(파이썬) 학습자료</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Malgun Gothic', '맑은 고딕', Apple SD Gothic Neo, sans-serif; font-size: 15px; line-height: 1.75; color: #1a1a1a; background: #f8f8f6; }
+  .top-bar { background: #1a1a1a; color: #fff; font-size: 12px; letter-spacing: .06em; padding: 8px 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .top-bar .grade { color: #aaa; }
+  .container { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .unit-header { border-bottom: 2.5px solid #1a1a1a; padding-bottom: .85rem; margin-bottom: 1.5rem; }
+  .breadcrumb { font-size: 12px; color: #666; margin-bottom: .35rem; letter-spacing: .03em; }
+  .unit-title { font-size: 24px; font-weight: 700; letter-spacing: -.01em; }
+  .page-range-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+  .page-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 3px 10px; border-radius: 3px; border: 1px solid #ccc; color: #555; background: #fff; }
+  .achievement { background: #fff; border-left: 4px solid #1a1a1a; padding: .85rem 1.1rem; margin-bottom: 2rem; font-size: 13.5px; border-radius: 0 4px 4px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .achievement-label { font-size: 10.5px; font-weight: 700; color: #888; letter-spacing: .1em; margin-bottom: .3rem; }
+  .achievement p { margin-bottom: .3rem; }
+  .achievement p:last-child { margin-bottom: 0; }
+  .section { margin-bottom: 2.5rem; }
+  .section-header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.1rem; gap: .75rem; flex-wrap: wrap; }
+  .section-title { font-size: 17px; font-weight: 700; }
+  .section-pages { font-size: 11.5px; color: #777; white-space: nowrap; flex-shrink: 0; border: 1px solid #ddd; padding: 2px 8px; border-radius: 3px; background: #fff; }
+  .subsection { margin-bottom: 1.75rem; }
+  .subsection-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: .65rem; gap: .5rem; }
+  .subsection-title { font-size: 13.5px; font-weight: 700; color: #444; letter-spacing: .03em; }
+  .sub-pages { font-size: 11px; color: #999; white-space: nowrap; }
+  .def-box { border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; margin: .6rem 0; background: #fff; font-size: 14px; }
+  .def-box .term { font-weight: 700; margin-bottom: .25rem; color: #1a1a1a; font-size: 14.5px; }
+  .def-box .desc { color: #333; line-height: 1.8; }
+  .def-box .sub { font-size: 12.5px; color: #888; margin-top: .35rem; }
+  .list-item { border: 1px solid #ddd; border-radius: 5px; background: #fff; padding: .9rem 1.1rem; margin-bottom: .65rem; }
+  .list-item-title { font-size: 14.5px; font-weight: 700; margin-bottom: .5rem; color: #1a1a1a; }
+  .list-item-body { font-size: 13.5px; color: #333; line-height: 1.85; }
+  .list-item-body p { margin-bottom: .4rem; }
+  .list-item-body p:last-child { margin-bottom: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: .75rem 0; background: #fff; }
+  th { background: #f0f0ee; font-weight: 700; padding: .6rem .85rem; border: 1px solid #ccc; text-align: left; }
+  td { padding: .55rem .85rem; border: 1px solid #ddd; vertical-align: top; line-height: 1.75; }
+  td.label-cell { font-weight: 700; white-space: nowrap; background: #fafafa; }
+  .code-result { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin: .65rem 0; }
+  .code-3col { display: grid; grid-template-columns: 1.4fr 0.8fr 0.8fr; gap: .65rem; margin: .65rem 0; }
+  @media (max-width: 600px) { .code-result, .code-3col { grid-template-columns: 1fr; } }
+  .code-result-label { font-size: 11px; font-weight: 700; color: #888; letter-spacing: .06em; margin-bottom: .3rem; }
+  .code-block { background: #f4f4f2; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #1a1a1a; white-space: pre; }
+  .result-block { background: #fff; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #333; white-space: pre; }
+  .input-block { background: #f8f8f6; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #555; white-space: pre; }
+  .warn-box { background: #fffbf0; border: 1px solid #e8d89a; border-radius: 5px; padding: .75rem 1rem; font-size: 13.5px; color: #5a4a00; margin: .65rem 0; line-height: 1.8; }
+  .index-viz { display: flex; gap: 0; margin: .75rem 0; flex-wrap: nowrap; overflow-x: auto; }
+  .idx-cell { border: 1px solid #ccc; min-width: 52px; text-align: center; background: #fff; }
+  .idx-cell .idx-val { padding: .5rem .3rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 14px; font-weight: 700; border-bottom: 1px solid #eee; }
+  .idx-cell .idx-pos { padding: .3rem; font-size: 11px; color: #888; }
+  .idx-cell:first-child { border-radius: 5px 0 0 5px; }
+  .idx-cell:last-child { border-radius: 0 5px 5px 0; }
+  .divider { border: none; border-top: 1px solid #ddd; margin: 2rem 0; }
+  code { font-family: 'Consolas', 'D2Coding', monospace; background: #f0f0ee; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+  .quiz-section { margin-top: 2rem; }
+  .quiz-title { font-size: 17px; font-weight: 700; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.2rem; }
+  .quiz-item { border: 1px solid #ddd; border-radius: 6px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; background: #fff; }
+  .quiz-num { font-size: 11px; font-weight: 700; color: #888; margin-bottom: .5rem; letter-spacing: .06em; }
+  .quiz-q { font-size: 14px; margin-bottom: .85rem; font-weight: 700; color: #1a1a1a; }
+  .quiz-opts { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .8rem; }
+  .quiz-opt { font-size: 13.5px; padding: .4rem .7rem; border-radius: 4px; border: 1px solid #e0e0e0; background: #fafafa; color: #333; }
+  .quiz-sub { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #f4f4f2; color: #333; line-height: 1.75; font-family: 'Consolas', 'D2Coding', monospace; white-space: pre; }
+  .quiz-sub-text { font-size: 13px; padding: .45rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #fafafa; color: #666; line-height: 1.75; }
+  .quiz-inputs { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .85rem; font-size: 13.5px; color: #333; }
+  .blank-input { border: 1px solid #ccc; border-radius: 4px; padding: .3rem .65rem; font-size: 13.5px; min-width: 100px; font-family: inherit; color: #1a1a1a; background: #fff; }
+  .blank-input:focus { outline: 2px solid #1a1a1a; outline-offset: 1px; }
+  .blank-input-code { font-family: 'Consolas', 'D2Coding', monospace; }
+  .ans-btn { font-size: 12.5px; padding: .38rem 1rem; border-radius: 4px; border: 1px solid #bbb; background: #fff; cursor: pointer; color: #555; font-family: inherit; }
+  .ans-btn:hover { background: #f0f0ee; }
+  .answer-box { display: none; margin-top: .8rem; padding: .75rem 1rem; border-radius: 4px; font-size: 13.5px; border: 1px solid #ccc; background: #f8f8f6; color: #333; line-height: 1.85; }
+  .answer-box.show { display: block; }
+  .ans-label { font-weight: 700; margin-bottom: .3rem; color: #1a1a1a; }
+  .ans-ref { font-size: 11.5px; color: #888; margin-bottom: .4rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 11.5px; color: #aaa; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .top-bar { display: none; }
+    .container { padding: 1rem; }
+    .ans-btn { display: none; }
+    .answer-box { display: block !important; border: 1px solid #ccc; }
+    .blank-input { border-bottom: 1px solid #999; border-top: none; border-left: none; border-right: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span style="font-weight:600">프로그래밍(파이썬) · 학습자료</span>
+  <span class="grade">고등학교 2학년</span>
+</div>
+
+<div class="container">
+
+  <div class="unit-header">
+    <div class="breadcrumb">Ⅱ. 프로그래밍의 기초 &gt; 중단원 1. 데이터 입출력 &gt; ② 데이터 입력</div>
+    <div class="unit-title">변수와 데이터 입력</div>
+    <div class="page-range-bar">
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        교과서 pp.52–64
+      </span>
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        변수: pp.52–57 &nbsp;·&nbsp; input(): pp.58–64
+      </span>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-label">성취기준</div>
+    <p><strong>[프그 02-01]</strong> 변수와 자료형의 개념과 특징을 이해하고, 구분하여 지정할 수 있으며, 이들을 사용한 프로그램을 작성할 수 있다.</p>
+    <p><strong>[프그 02-02]</strong> 입력과 출력의 기능을 이해하고, 형식을 지정하여 데이터를 입력하고 출력할 수 있다.</p>
+  </div>
+
+  <!-- ══ 섹션 1. 변수 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">1. 변수</div>
+      <span class="section-pages">교과서 pp.52–57</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">변수의 개념</div>
+        <span class="sub-pages">p.52</span>
+      </div>
+      <div class="def-box">
+        <div class="term">변수 (variable)</div>
+        <div class="desc">값이 저장된 위치를 가리키는 특별한 이름이다. 변수를 활용하면 여러 가지 이름으로 데이터를 저장할 수 있으며, 필요할 때 편리하게 불러 재사용할 수 있다.</div>
+        <div class="sub">여러 가지 다른 값으로 바꾸어 저장할 수 있으므로 "변하는 수"라는 의미이다. 반면 정수, 실수, 문자 등 그 값 자체는 변할 수 없으므로 "항상 같은 수"라는 의미로 상수(constant)라고 부른다.</div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">대입 연산자 (=)</div>
+        <span class="sub-pages">p.53</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">변수에 원하는 값을 저장하기 위해 <strong>대입(assignment) 연산자 =</strong>를 사용한다.</p>
+      <table>
+        <tr><th style="width:10rem">형식</th><th>설명</th></tr>
+        <tr><td class="label-cell"><code>변수 = 값</code></td><td>오른쪽의 값을 왼쪽의 변수에 저장한다.</td></tr>
+      </table>
+      <div class="warn-box" style="margin-top:.65rem">
+        <strong>주의 사항</strong><br>
+        • <code>변수 = 값</code> — 정상. 오른쪽의 값이나 계산 결괏값을 왼쪽 변수에 저장한다.<br>
+        • <code>값 = 변수</code> — 오류 발생. 좌우 순서가 반드시 지켜져야 한다.<br>
+        • <code>변수 = 변수</code> — 정상. 오른쪽 변수에 저장된 값을 왼쪽 변수에 저장한다.
+      </div>
+
+      <div class="code-result" style="margin-top:.75rem">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">s = "Hello"
+print(s)
+print(s)
+print(s)</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">Hello
+Hello
+Hello</div>
+        </div>
+      </div>
+
+      <p style="font-size:13.5px;color:#333;margin-top:.75rem;margin-bottom:.5rem">프로그램 실행 도중 새로운 값을 저장하면 이전 값을 덮어쓰며, 다시 바꾸기 전까지 그 값이 유지된다.</p>
+      <div class="code-result">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">n = 0
+print(n)
+n = 1
+print(n)
+print(n)</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">0
+1
+1</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">변수 이름 규칙</div>
+        <span class="sub-pages">p.52</span>
+      </div>
+      <table>
+        <tr><th>규칙</th><th>가능한 예</th><th>불가능한 예</th></tr>
+        <tr>
+          <td>영문자(A–Z, a–z), 숫자(0–9), 밑줄(_)만 사용한다.</td>
+          <td><code>a</code>, <code>B1</code>, <code>_c</code>, <code>sum</code></td>
+          <td><code>a+</code>, <code>a b</code>, <code>2.0</code>, <code>'c'</code></td>
+        </tr>
+        <tr>
+          <td>영문자 또는 밑줄(_)로 시작하며, 숫자로는 시작하지 않는다.</td>
+          <td><code>n</code>, <code>_val</code>, <code>sum1</code></td>
+          <td><code>1n</code>, <code>2a</code>, <code>2score</code></td>
+        </tr>
+        <tr>
+          <td>영문자 대문자와 소문자를 구분하여 작성한다.</td>
+          <td colspan="2"><code>ab</code>, <code>Ab</code>, <code>aB</code>, <code>AB</code>는 모두 다른 변수로 인식된다.</td>
+        </tr>
+      </table>
+
+      <p style="font-size:13.5px;color:#333;margin:.75rem 0 .45rem">의미와 처리 방법이 먼저 정해진 <strong>예약어</strong>나 <strong>내장 함수 이름</strong>은 변수 이름으로 사용할 수 없다.</p>
+      <table>
+        <tr><th style="width:8rem">구분</th><th>설명</th><th>예시</th></tr>
+        <tr>
+          <td class="label-cell">예약어</td>
+          <td>의미나 처리가 미리 정해져 있는 단어</td>
+          <td><code>if</code>, <code>while</code>, <code>for</code>, <code>continue</code>, <code>break</code> 등</td>
+        </tr>
+        <tr>
+          <td class="label-cell">내장 함수 이름</td>
+          <td>처리 내용이 먼저 정해져 있는 함수 이름</td>
+          <td><code>print</code>, <code>int</code>, <code>float</code>, <code>input</code>, <code>min</code>, <code>max</code> 등</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">리스트 변수와 인덱싱</div>
+        <span class="sub-pages">pp.56–57</span>
+      </div>
+      <div class="def-box">
+        <div class="term">리스트 (list)</div>
+        <div class="desc">여러 개의 데이터를 하나의 변수에 <strong>순서대로 나열</strong>하여 저장하는 자료형이다. 대괄호([ ])와 쉼표(,)를 사용하여 만든다.</div>
+        <div class="sub">형식: <code>변수 = [값0, 값1, 값2, ...]</code></div>
+      </div>
+
+      <p style="font-size:13.5px;color:#333;margin:.65rem 0 .4rem">리스트에 저장된 각 값은 <strong>인덱스(참조 번호)</strong>로 접근한다. 첫 번째 값의 인덱스는 <strong>0</strong>번부터 시작한다.</p>
+      <div class="index-viz">
+        <div class="idx-cell"><div class="idx-val">1</div><div class="idx-pos">d[0]</div></div>
+        <div class="idx-cell"><div class="idx-val">2</div><div class="idx-pos">d[1]</div></div>
+        <div class="idx-cell"><div class="idx-val">3</div><div class="idx-pos">d[2]</div></div>
+        <div class="idx-cell"><div class="idx-val">4</div><div class="idx-pos">d[3]</div></div>
+        <div class="idx-cell"><div class="idx-val">5</div><div class="idx-pos">d[4]</div></div>
+      </div>
+
+      <div class="code-result">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">d = [1, 2, 3, 4, 5]
+print(d)
+print(d[0], d[4])
+print(d[4], d[3], d[2], d[1], d[0])</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">[1, 2, 3, 4, 5]
+1 5
+5 4 3 2 1</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ 리스트 전체를 출력하면 대괄호([ ])와 쉼표(,)가 포함되어 출력된다.</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">전역 변수 · 지역 변수 · 매개 변수</div>
+        <span class="sub-pages">p.57</span>
+      </div>
+      <table>
+        <tr><th style="width:7rem">종류</th><th>정의</th><th>사용 가능 범위</th></tr>
+        <tr>
+          <td class="label-cell">전역 변수</td>
+          <td>함수 바깥(코드 블록 밖)에서 선언된 변수</td>
+          <td>프로그램의 <strong>모든 위치</strong>에서 참조·사용 가능</td>
+        </tr>
+        <tr>
+          <td class="label-cell">지역 변수</td>
+          <td>함수 안에서 선언된 변수</td>
+          <td>해당 함수 <strong>내부에서만</strong> 참조·사용 가능</td>
+        </tr>
+        <tr>
+          <td class="label-cell">매개 변수</td>
+          <td>함수 실행에 필요한 값을 함수 안으로 전달하기 위해 사용하는 특별한 변수</td>
+          <td>해당 함수 <strong>내부에서만</strong> 사용 가능</td>
+        </tr>
+      </table>
+
+      <p style="font-size:13.5px;color:#333;margin:.65rem 0 .45rem">함수 안에서 전역 변수를 수정하려면 <strong><code>global</code></strong> 예약어를 반드시 선언해야 한다.</p>
+      <div class="code-result">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">s = 0          # 전역 변수 s
+def f(n):      # 매개 변수 n
+    global s
+    k = 0      # 지역 변수 k
+    while k < n:
+        k = k + 1
+        s = s + k
+f(3)
+print(s)</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">6</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ <code>global s</code> 선언이 없으면 함수 안에서 전역 변수 <code>s</code>를 수정할 수 없어 오류가 발생한다.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 섹션 2. input() 함수 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">2. input() 함수</div>
+      <span class="section-pages">교과서 pp.58–64</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">input() 기본</div>
+        <span class="sub-pages">pp.58–59</span>
+      </div>
+      <div class="def-box">
+        <div class="term">input() 함수</div>
+        <div class="desc">키보드를 통하여 한 줄로 입력받은 내용을 <strong>문자열(str)</strong>로 반환하는 함수이다. 입력받은 값은 항상 문자열로 처리된다.</div>
+      </div>
+      <table style="margin-top:.65rem">
+        <tr><th style="width:13rem">형식</th><th>설명</th></tr>
+        <tr><td class="label-cell"><code>변수 = input()</code></td><td>키보드로 입력받은 한 줄 문자열을 변수에 저장한다.</td></tr>
+        <tr><td class="label-cell"><code>변수 = int(input())</code></td><td>입력받은 문자열을 <strong>정수</strong>로 변환하여 저장한다.</td></tr>
+        <tr><td class="label-cell"><code>변수 = float(input())</code></td><td>입력받은 문자열을 <strong>실수</strong>로 변환하여 저장한다.</td></tr>
+      </table>
+
+      <div class="code-3col" style="margin-top:.75rem">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">s = input()
+print(s)</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">python</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">python</div>
+        </div>
+      </div>
+
+      <div class="warn-box" style="margin-top:.5rem">
+        키보드로 <code>123</code>을 입력하면 문자열 <code>"123"</code>으로 처리된다. 정수로 사용하려면 반드시 <strong><code>int(input())</code></strong>으로 변환해야 한다.
+      </div>
+
+      <p style="font-size:13.5px;color:#333;margin:.75rem 0 .45rem"><code>input()</code>은 한 번에 한 줄씩만 입력받으므로, 여러 줄을 입력받을 때는 여러 번 사용한다.</p>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">s1 = input()
+s2 = input()
+print(s1)
+print(s2)</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">hello
+world</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">hello
+world</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">split() — 한 줄 입력 나누기</div>
+        <span class="sub-pages">pp.60–61, 63</span>
+      </div>
+      <div class="def-box">
+        <div class="term">split() 함수</div>
+        <div class="desc">입력받은 문자열을 특정 문자를 기준으로 나누어 분리한다. 기준 문자를 지정하지 않으면 <strong>빈칸(스페이스)</strong>을 기준으로 나눈다.</div>
+      </div>
+
+      <div class="list-item" style="margin-top:.75rem">
+        <div class="list-item-title">① 여러 변수에 나누어 저장</div>
+        <div class="list-item-body">
+          <p>빈칸으로 구분된 두 값을 한 줄로 입력받아 각각 다른 변수에 저장한다.</p>
+          <div class="code-3col" style="margin-top:.5rem">
+            <div>
+              <div class="code-result-label">코드</div>
+              <div class="code-block">s1, s2 = input().split()
+print(s1)
+print(s2)</div>
+            </div>
+            <div>
+              <div class="code-result-label">입력</div>
+              <div class="input-block">hello world</div>
+            </div>
+            <div>
+              <div class="code-result-label">실행 결과</div>
+              <div class="result-block">hello
+world</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">② 리스트에 저장</div>
+        <div class="list-item-body">
+          <p>빈칸으로 구분된 여러 값을 한 줄로 입력받아 하나의 리스트 변수에 저장한다.</p>
+          <div class="code-3col" style="margin-top:.5rem">
+            <div>
+              <div class="code-result-label">코드</div>
+              <div class="code-block">s = input().split()
+print(s[0])
+print(s[1])
+print(s[2])</div>
+            </div>
+            <div>
+              <div class="code-result-label">입력</div>
+              <div class="input-block">hello python world</div>
+            </div>
+            <div>
+              <div class="code-result-label">실행 결과</div>
+              <div class="result-block">hello
+python
+world</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-item-title">③ 특정 문자를 기준으로 나누기 — split('구분자')</div>
+        <div class="list-item-body">
+          <p><code>split('구분자')</code>를 사용하면 빈칸이 아닌 원하는 문자를 기준으로 나눌 수 있다.</p>
+          <div class="code-3col" style="margin-top:.5rem">
+            <div>
+              <div class="code-result-label">코드</div>
+              <div class="code-block">h, m, s = input().split(':')
+print(h)
+print(m)
+print(s)</div>
+            </div>
+            <div>
+              <div class="code-result-label">입력</div>
+              <div class="input-block">12:35:47</div>
+            </div>
+            <div>
+              <div class="code-result-label">실행 결과</div>
+              <div class="result-block">12
+35
+47</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">list(map(int, input().split())) — 정수 리스트 입력</div>
+        <span class="sub-pages">pp.62–64</span>
+      </div>
+      <p style="font-size:13.5px;color:#333;margin-bottom:.65rem">
+        <code>input().split()</code>으로 나눈 값들은 모두 <strong>문자열</strong>이다. 정수로 사용하려면 <code>map(int, ...)</code>으로 변환한 후 <code>list()</code>로 리스트를 만든다.
+      </p>
+      <table>
+        <tr><th style="width:10rem">구성 요소</th><th>역할</th></tr>
+        <tr><td class="label-cell"><code>input().split()</code></td><td>한 줄 입력을 빈칸 기준으로 나누어 <strong>문자열 리스트</strong>로 반환</td></tr>
+        <tr><td class="label-cell"><code>map(int, ...)</code></td><td>리스트의 각 값을 <strong>정수(int)</strong>로 변환</td></tr>
+        <tr><td class="label-cell"><code>list(...)</code></td><td>변환된 값들을 <strong>리스트</strong>로 만들어 반환</td></tr>
+      </table>
+
+      <div class="code-3col" style="margin-top:.75rem">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">d = list(map(int, input().split()))
+print(d[0], d[1], d[2], d[3], d[4])</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">1 2 3 4 5</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">1 2 3 4 5</div>
+        </div>
+      </div>
+
+      <p style="font-size:13.5px;color:#333;margin:.65rem 0 .45rem">구분자를 지정하면 다른 형식으로 입력받을 수도 있다.</p>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">d = list(map(int, input().split(',')))
+print(d[0], d[1], d[2], d[3], d[4], sep='\n')</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">1,2,3,4,5</div>
+        </div>
+        <div>
+          <div class="code-result-label">실행 결과</div>
+          <div class="result-block">1
+2
+3
+4
+5</div>
+        </div>
+      </div>
+
+      <div class="subsection-header" style="margin-top:1.25rem">
+        <div class="subsection-title">입력 방법 전체 비교</div>
+        <span class="sub-pages">pp.58–64</span>
+      </div>
+      <table>
+        <tr><th>형식</th><th>입력 예</th><th>결과</th></tr>
+        <tr><td><code>변수 = input()</code></td><td><code>hello</code></td><td>문자열 <code>"hello"</code> 저장</td></tr>
+        <tr><td><code>변수 = int(input())</code></td><td><code>123</code></td><td>정수 <code>123</code> 저장</td></tr>
+        <tr><td><code>s1, s2 = input().split()</code></td><td><code>hello world</code></td><td><code>s1="hello"</code>, <code>s2="world"</code></td></tr>
+        <tr><td><code>s = input().split()</code></td><td><code>hello world</code></td><td>리스트 <code>["hello","world"]</code> 저장</td></tr>
+        <tr><td><code>d = list(map(int, input().split()))</code></td><td><code>1 2 3</code></td><td>정수 리스트 <code>[1, 2, 3]</code> 저장</td></tr>
+        <tr><td><code>h,m,s = input().split(':')</code></td><td><code>12:35:47</code></td><td><code>h="12"</code>, <code>m="35"</code>, <code>s="47"</code></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 확인 문제 ══ -->
+  <div class="quiz-section">
+    <div class="quiz-title">확인 문제</div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 1</div>
+      <div class="quiz-q">다음 변수 이름의 사용 가능 여부를 판단하고, 불가능한 경우 이유를 쓰시오.</div>
+      <table style="font-size:13.5px;margin-bottom:.85rem">
+        <tr><th style="width:35%">변수 이름</th><th style="width:25%">가능 / 불가능</th><th>불가능한 이유</th></tr>
+        <tr><td><code>total_sum</code></td><td><input class="blank-input" placeholder="가능/불가능"></td><td><input class="blank-input" style="min-width:130px" placeholder="(가능이면 생략)"></td></tr>
+        <tr><td><code>2score</code></td><td><input class="blank-input" placeholder="가능/불가능"></td><td><input class="blank-input" style="min-width:130px" placeholder="이유"></td></tr>
+        <tr><td><code>if</code></td><td><input class="blank-input" placeholder="가능/불가능"></td><td><input class="blank-input" style="min-width:130px" placeholder="이유"></td></tr>
+        <tr><td><code>my score</code></td><td><input class="blank-input" placeholder="가능/불가능"></td><td><input class="blank-input" style="min-width:130px" placeholder="이유"></td></tr>
+        <tr><td><code>_value</code></td><td><input class="blank-input" placeholder="가능/불가능"></td><td><input class="blank-input" style="min-width:130px" placeholder="(가능이면 생략)"></td></tr>
+      </table>
+      <button class="ans-btn" onclick="toggleAns('q1')">정답 확인</button>
+      <div class="answer-box" id="q1">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.52 참고</div>
+        <code>total_sum</code> — <strong>가능</strong><br>
+        <code>2score</code> — <strong>불가능</strong>: 숫자로 시작할 수 없다.<br>
+        <code>if</code> — <strong>불가능</strong>: 파이썬 예약어이므로 변수 이름으로 사용할 수 없다.<br>
+        <code>my score</code> — <strong>불가능</strong>: 빈칸(스페이스)은 변수 이름에 사용할 수 없다.<br>
+        <code>_value</code> — <strong>가능</strong>: 밑줄(_)로 시작 가능하다.
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 2</div>
+      <div class="quiz-q">다음 코드의 실행 결과를 쓰시오.</div>
+      <div class="quiz-sub">d = [10, 20, 30, 40, 50]
+print(d[0], d[2], d[4])</div>
+      <div class="quiz-sub">d = ["Hello", "Python", "World"]
+print(d[2], d[0], d[1])</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>① 결과: <input class="blank-input blank-input-code" style="min-width:160px" placeholder="출력 결과"></div>
+        <div>② 결과: <input class="blank-input blank-input-code" style="min-width:200px" placeholder="출력 결과"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q2')">정답 확인</button>
+      <div class="answer-box" id="q2">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.56–57 참고</div>
+        ① <code>10 30 50</code> — d[0]=10, d[2]=30, d[4]=50 순서로 스페이스 구분 출력<br>
+        ② <code>World Hello Python</code> — d[2]="World", d[0]="Hello", d[1]="Python"
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 3</div>
+      <div class="quiz-q">다음 코드에서 <code>2026-06-15</code>를 입력했을 때의 실행 결과를 쓰시오.</div>
+      <div class="quiz-sub">y, m, d = input().split('-')
+print(d, m, y, sep='/')</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>결과: <input class="blank-input blank-input-code" style="min-width:160px" placeholder="출력 결과"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q3')">정답 확인</button>
+      <div class="answer-box" id="q3">
+        <div class="ans-label">정답: <code>15/06/2026</code></div>
+        <div class="ans-ref">교과서 p.63 참고</div>
+        <code>split('-')</code>으로 하이픈 기준 분리 → y="2026", m="06", d="15" 저장<br>
+        <code>print(d, m, y, sep='/')</code> → d, m, y 순서로 슬래시(/) 구분 출력<br>
+        결과: <code>15/06/2026</code>
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 4</div>
+      <div class="quiz-q">빈칸으로 구분된 세 개의 정수를 한 줄로 입력받아 리스트에 저장하고, 역순으로 출력하는 코드의 빈칸을 완성하시오.</div>
+      <div class="quiz-sub">d = list(map( ㉠ , input().split()))
+print(d[ ㉡ ], d[ ㉢ ], d[ ㉣ ])</div>
+      <div class="quiz-sub-text">예) 입력: 10 20 30 → 출력: 30 20 10</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>㉠: <input class="blank-input blank-input-code" placeholder="빈칸"></div>
+        <div>㉡: <input class="blank-input blank-input-code" placeholder="인덱스"></div>
+        <div>㉢: <input class="blank-input blank-input-code" placeholder="인덱스"></div>
+        <div>㉣: <input class="blank-input blank-input-code" placeholder="인덱스"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q4')">정답 확인</button>
+      <div class="answer-box" id="q4">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.62 참고</div>
+        ㉠ <strong>int</strong> — 각 값을 정수로 변환<br>
+        ㉡ <strong>2</strong> — 세 번째 값(마지막)<br>
+        ㉢ <strong>1</strong> — 두 번째 값(중간)<br>
+        ㉣ <strong>0</strong> — 첫 번째 값<br><br>
+        완성: <code>d = list(map(int, input().split()))</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>print(d[2], d[1], d[0])</code>
+      </div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="quiz-num">문제 5</div>
+      <div class="quiz-q">변수와 input() 함수에 대한 설명으로 <u>옳지 않은</u> 것은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① 변수 이름은 영문자 또는 밑줄(_)로 시작해야 하며, 숫자로 시작할 수 없다.</div>
+        <div class="quiz-opt">② input() 함수로 입력받은 값은 항상 문자열로 처리된다.</div>
+        <div class="quiz-opt">③ 리스트의 첫 번째 요소는 인덱스 1번으로 접근한다.</div>
+        <div class="quiz-opt">④ 함수 안에서 전역 변수를 수정하려면 global 예약어를 사용해야 한다.</div>
+        <div class="quiz-opt">⑤ split()은 기준 문자를 지정하지 않으면 빈칸(스페이스)을 기준으로 나눈다.</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q5')">정답 확인</button>
+      <div class="answer-box" id="q5">
+        <div class="ans-label">정답: ③</div>
+        <div class="ans-ref">교과서 p.56 참고</div>
+        리스트의 첫 번째 요소는 인덱스 <strong>0번</strong>부터 시작한다. 인덱스 1번은 두 번째 요소를 가리킨다.<br><br>
+        ① 변수 이름은 영문자 또는 밑줄로 시작, 숫자 시작 불가 — 옳음 (p.52)<br>
+        ② input()은 항상 문자열 반환 — 옳음 (p.58)<br>
+        ④ 전역 변수 수정 시 global 필요 — 옳음 (p.57)<br>
+        ⑤ split() 기본 구분자는 빈칸 — 옳음 (p.60)
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>Ⅱ-1-②. 변수와 데이터 입력 · 프로그래밍(파이썬) 학습자료</span>
+    <span>교과서 pp.52–64</span>
+  </div>
+
+</div>
+
+<script>
+function toggleAns(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('show');
+  const btn = box.previousElementSibling;
+  btn.textContent = box.classList.contains('show') ? '정답 닫기' : '정답 확인';
+}
+</script>
+</body>
+</html>

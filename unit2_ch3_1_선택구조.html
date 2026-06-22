@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅱ-3-①. 선택 구조 | 프로그래밍(파이썬) 학습자료</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Malgun Gothic', '맑은 고딕', Apple SD Gothic Neo, sans-serif; font-size: 15px; line-height: 1.75; color: #1a1a1a; background: #f8f8f6; }
+  .top-bar { background: #1a1a1a; color: #fff; font-size: 12px; letter-spacing: .06em; padding: 8px 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .top-bar .grade { color: #aaa; }
+  .container { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .unit-header { border-bottom: 2.5px solid #1a1a1a; padding-bottom: .85rem; margin-bottom: 1.5rem; }
+  .breadcrumb { font-size: 12px; color: #666; margin-bottom: .35rem; letter-spacing: .03em; }
+  .unit-title { font-size: 24px; font-weight: 700; letter-spacing: -.01em; }
+  .page-range-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+  .page-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 3px 10px; border-radius: 3px; border: 1px solid #ccc; color: #555; background: #fff; }
+  .achievement { background: #fff; border-left: 4px solid #1a1a1a; padding: .85rem 1.1rem; margin-bottom: 2rem; font-size: 13.5px; border-radius: 0 4px 4px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .achievement-label { font-size: 10.5px; font-weight: 700; color: #888; letter-spacing: .1em; margin-bottom: .3rem; }
+  .section { margin-bottom: 2.5rem; }
+  .section-header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.1rem; gap: .75rem; flex-wrap: wrap; }
+  .section-title { font-size: 17px; font-weight: 700; }
+  .section-pages { font-size: 11.5px; color: #777; white-space: nowrap; flex-shrink: 0; border: 1px solid #ddd; padding: 2px 8px; border-radius: 3px; background: #fff; }
+  .subsection { margin-bottom: 1.75rem; }
+  .subsection-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: .65rem; gap: .5rem; }
+  .subsection-title { font-size: 13.5px; font-weight: 700; color: #444; letter-spacing: .03em; }
+  .sub-pages { font-size: 11px; color: #999; white-space: nowrap; }
+  .def-box { border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; margin: .6rem 0; background: #fff; font-size: 14px; }
+  .def-box .term { font-weight: 700; margin-bottom: .25rem; color: #1a1a1a; font-size: 14.5px; }
+  .def-box .desc { color: #333; line-height: 1.8; }
+  .def-box .sub { font-size: 12.5px; color: #888; margin-top: .35rem; }
+  .list-item { border: 1px solid #ddd; border-radius: 5px; background: #fff; padding: .9rem 1.1rem; margin-bottom: .65rem; }
+  .list-item-title { font-size: 14.5px; font-weight: 700; margin-bottom: .5rem; color: #1a1a1a; }
+  .list-item-body { font-size: 13.5px; color: #333; line-height: 1.85; }
+  .list-item-body p { margin-bottom: .4rem; }
+  .list-item-body p:last-child { margin-bottom: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: .75rem 0; background: #fff; }
+  th { background: #f0f0ee; font-weight: 700; padding: .6rem .85rem; border: 1px solid #ccc; text-align: left; }
+  td { padding: .55rem .85rem; border: 1px solid #ddd; vertical-align: top; line-height: 1.75; }
+  td.label-cell { font-weight: 700; white-space: nowrap; background: #fafafa; }
+  .code-result { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin: .65rem 0; }
+  .code-3col { display: grid; grid-template-columns: 1.4fr 0.8fr 0.8fr; gap: .65rem; margin: .65rem 0; }
+  @media (max-width: 580px) { .code-result, .code-3col { grid-template-columns: 1fr; } }
+  .code-result-label { font-size: 11px; font-weight: 700; color: #888; letter-spacing: .06em; margin-bottom: .3rem; }
+  .code-block { background: #f4f4f2; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #1a1a1a; white-space: pre; }
+  .result-block { background: #fff; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #333; white-space: pre; }
+  .input-block { background: #f8f8f6; border: 1px solid #ddd; border-radius: 5px; padding: .85rem 1.1rem; font-family: 'Consolas', 'D2Coding', monospace; font-size: 13.5px; line-height: 1.9; color: #555; white-space: pre; }
+  .warn-box { background: #fffbf0; border: 1px solid #e8d89a; border-radius: 5px; padding: .75rem 1rem; font-size: 13.5px; color: #5a4a00; margin: .65rem 0; line-height: 1.8; }
+  .compare-box { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin: .65rem 0; }
+  @media (max-width: 580px) { .compare-box { grid-template-columns: 1fr; } }
+  .compare-item { border: 1px solid #ddd; border-radius: 5px; overflow: hidden; }
+  .compare-label { font-size: 11.5px; font-weight: 700; padding: .4rem .85rem; background: #f0f0ee; border-bottom: 1px solid #ddd; letter-spacing: .04em; color: #444; }
+  .divider { border: none; border-top: 1px solid #ddd; margin: 2rem 0; }
+  code { font-family: 'Consolas', 'D2Coding', monospace; background: #f0f0ee; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+  .quiz-section { margin-top: 2rem; }
+  .quiz-title { font-size: 17px; font-weight: 700; border-bottom: 1.5px solid #1a1a1a; padding-bottom: .45rem; margin-bottom: 1.2rem; }
+  .quiz-item { border: 1px solid #ddd; border-radius: 6px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; background: #fff; }
+  .quiz-num { font-size: 11px; font-weight: 700; color: #888; margin-bottom: .5rem; letter-spacing: .06em; }
+  .quiz-q { font-size: 14px; margin-bottom: .85rem; font-weight: 700; color: #1a1a1a; }
+  .quiz-opts { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .8rem; }
+  .quiz-opt { font-size: 13.5px; padding: .4rem .7rem; border-radius: 4px; border: 1px solid #e0e0e0; background: #fafafa; color: #333; }
+  .quiz-sub { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #f4f4f2; color: #333; line-height: 1.75; font-family: 'Consolas', 'D2Coding', monospace; white-space: pre; }
+  .quiz-sub-text { font-size: 13.5px; padding: .55rem .8rem; border: 1px solid #e8e8e8; border-radius: 4px; margin-bottom: .5rem; background: #fafafa; color: #333; line-height: 1.75; }
+  .quiz-inputs { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .85rem; font-size: 13.5px; color: #333; }
+  .quiz-inputs-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: .85rem; font-size: 13.5px; color: #333; }
+  .blank-input { border: 1px solid #ccc; border-radius: 4px; padding: .3rem .65rem; font-size: 13.5px; min-width: 100px; font-family: 'Consolas', 'D2Coding', monospace; color: #1a1a1a; background: #fff; }
+  .blank-input:focus { outline: 2px solid #1a1a1a; outline-offset: 1px; }
+  .blank-input-wide { min-width: 180px; }
+  .ans-btn { font-size: 12.5px; padding: .38rem 1rem; border-radius: 4px; border: 1px solid #bbb; background: #fff; cursor: pointer; color: #555; font-family: inherit; }
+  .ans-btn:hover { background: #f0f0ee; }
+  .answer-box { display: none; margin-top: .8rem; padding: .75rem 1rem; border-radius: 4px; font-size: 13.5px; border: 1px solid #ccc; background: #f8f8f6; color: #333; line-height: 1.85; }
+  .answer-box.show { display: block; }
+  .ans-label { font-weight: 700; margin-bottom: .3rem; color: #1a1a1a; }
+  .ans-ref { font-size: 11.5px; color: #888; margin-bottom: .4rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 11.5px; color: #aaa; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .top-bar { display: none; }
+    .container { padding: 1rem; }
+    .ans-btn { display: none; }
+    .answer-box { display: block !important; border: 1px solid #ccc; }
+    .blank-input { border-bottom: 1px solid #999; border-top: none; border-left: none; border-right: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <span style="font-weight:600">프로그래밍(파이썬) · 학습자료</span>
+  <span class="grade">고등학교 2학년</span>
+</div>
+<div class="container">
+
+  <div class="unit-header">
+    <div class="breadcrumb">Ⅱ. 프로그래밍의 기초 &gt; 중단원 3. 제어 구조 &gt; ① 선택 구조</div>
+    <div class="unit-title">선택 구조</div>
+    <div class="page-range-bar">
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        교과서 pp.99–108
+      </span>
+      <span class="page-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        if: pp.99–101 &nbsp;·&nbsp; if~else: pp.102–104 &nbsp;·&nbsp; 중첩: pp.105–108
+      </span>
+    </div>
+  </div>
+
+  <div class="achievement">
+    <div class="achievement-label">성취기준</div>
+    <p><strong>[프그 02-04]</strong> 순차, 선택, 반복의 제어 구조를 이해하고, 문제 상황에 알맞은 제어 구조를 선택하여 이를 적용한 프로그램을 작성할 수 있다.</p>
+  </div>
+
+  <!-- ══ 섹션 1. 순차 구조 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">1. 순차 구조와 선택 구조</div>
+      <span class="section-pages">교과서 p.99</span>
+    </div>
+    <div class="def-box">
+      <div class="term">순차 구조</div>
+      <div class="desc">프로그래밍 언어로 작성된 각각의 명령이 미리 정해진 규칙과 순서에 따라 <strong>위에서 아래로</strong> 한 줄씩 단계적으로 실행되는 구조이다.</div>
+    </div>
+    <div class="def-box">
+      <div class="term">선택 구조</div>
+      <div class="desc">어떤 조건을 검사한 결과에 따라 <strong>추가 작업이나 다른 작업</strong>을 실행하는 구조이다. 조건식의 계산 결과(True/False)에 따라 실행 흐름이 달라진다.</div>
+    </div>
+    <div class="def-box">
+      <div class="term">코드 블록 (code block)</div>
+      <div class="desc">코드들이 실행되는 논리적인 묶음이다. 파이썬에서는 <strong>일정한 간격의 들여쓰기</strong>를 사용하여 코드 블록을 표현한다.</div>
+      <div class="sub">※ 들여쓰기가 같은 코드는 같은 블록에 속하며, 선택·반복 구조에서 반드시 지켜야 한다.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 섹션 2. if 단독 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">2. if ~ 선택 구조</div>
+      <span class="section-pages">교과서 pp.99–101</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">형식과 동작 방식</div>
+        <span class="sub-pages">p.99</span>
+      </div>
+      <div class="compare-box">
+        <div class="compare-item">
+          <div class="compare-label">형식</div>
+          <div class="code-block">if 조건식:
+    실행 1
+    실행 2</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">동작</div>
+          <div class="code-block">조건식 → True  : 블록 실행
+조건식 → False : 블록 건너뜀</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        <strong>필수 규칙</strong><br>
+        • <code>if</code> 조건식 끝에 <strong>콜론(:)</strong>이 반드시 있어야 한다.<br>
+        • 실행할 코드는 반드시 <strong>들여쓰기(indent)</strong>로 작성한다.<br>
+        • 들여쓰기가 없으면 if 블록에 속하지 않고 항상 실행된다.
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 절댓값 출력</div>
+        <span class="sub-pages">p.100</span>
+      </div>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">n = int(input())
+if n < 0:
+    n = -n
+print(n)</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">-5</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">5</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ n이 0 이상이면 if 블록이 실행되지 않고 <code>print(n)</code>으로 바로 이동</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 두 수 비교 (if 두 개)</div>
+        <span class="sub-pages">p.101</span>
+      </div>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">a = int(input())
+b = int(input())
+if a >= b:
+    print(a)
+if a < b:
+    print(b)</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">3
+5</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">5</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ <code>a&gt;=b</code>와 <code>a&lt;b</code>는 서로 겹치는 부분이 없어 둘 중 하나는 반드시 True</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 섹션 3. if ~ else ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">3. if ~ else ~ 선택 구조</div>
+      <span class="section-pages">교과서 pp.102–104</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">형식과 동작 방식</div>
+        <span class="sub-pages">p.102</span>
+      </div>
+      <div class="compare-box">
+        <div class="compare-item">
+          <div class="compare-label">형식</div>
+          <div class="code-block">if 조건식:
+    실행 1   # True일 때
+else:
+    실행 2   # False일 때</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">if 단독과의 차이</div>
+          <div class="code-block">if 단독:
+  True → 블록 실행
+  False → 건너뜀
+
+if~else:
+  True  → if 블록 실행
+  False → else 블록 실행
+  (둘 중 하나 반드시 실행)</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        <code>else:</code> 끝에도 <strong>콜론(:)</strong>이 반드시 있어야 한다. else 블록에서는 조건식을 다시 검사할 필요가 없다. 조건이 False라는 것이 이미 확인되었기 때문이다.
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 짝수/홀수 판별</div>
+        <span class="sub-pages">p.103</span>
+      </div>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">n = int(input())
+if (n % 2) == 0:
+    print("even")
+else:
+    print("odd")</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">3</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">odd</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 두 수의 차 (항상 양수로)</div>
+        <span class="sub-pages">p.104</span>
+      </div>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">a = int(input())
+b = int(input())
+if a >= b:
+    print(a - b)
+else:
+    print(b - a)</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">3
+5</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 섹션 4. 중첩 선택 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">4. 선택 구조의 중첩</div>
+      <span class="section-pages">교과서 pp.105–108</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">개념</div>
+        <span class="sub-pages">p.105</span>
+      </div>
+      <div class="def-box">
+        <div class="term">선택 구조의 중첩 (nested)</div>
+        <div class="desc">선택 구조 안에 다른 선택 구조를 넣어 <strong>여러 가지 복잡한 조건을 체계적으로</strong> 검사하거나 순서대로 검사하여 다르게 처리할 수 있다. if 블록이나 else 블록 안에 다른 if ~ else 구조를 자유롭게 중첩할 수 있다.</div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 성적 3단계 분류 (A/B/C)</div>
+        <span class="sub-pages">pp.105–106</span>
+      </div>
+      <div class="code-result">
+        <div>
+          <div class="code-result-label">코드 (중첩 방식)</div>
+          <div class="code-block">n = int(input())
+if n >= 80:
+    print("A")
+else:
+    if n >= 60:
+        print("B")
+    else:
+        print("C")</div>
+        </div>
+        <div>
+          <div class="code-result-label">코드 (논리 연산자 방식)</div>
+          <div class="code-block">n = int(input())
+if n >= 80:
+    print("A")
+if n < 80 and n >= 60:
+    print("B")
+if n < 60:
+    print("C")</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.3rem">※ 두 방식 모두 같은 결과. 중첩 방식은 이미 False인 조건을 다시 검사할 필요가 없어 더 효율적</p>
+      <table style="margin-top:.75rem">
+        <tr><th>입력 n</th><th>조건 검사 흐름</th><th>출력</th></tr>
+        <tr><td>90</td><td>n≥80 → True</td><td>A</td></tr>
+        <tr><td>70</td><td>n≥80 → False → n≥60 → True</td><td>B</td></tr>
+        <tr><td>50</td><td>n≥80 → False → n≥60 → False</td><td>C</td></tr>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">예시 — 세 수 중 최댓값 찾기</div>
+        <span class="sub-pages">p.107</span>
+      </div>
+      <div class="code-3col">
+        <div>
+          <div class="code-result-label">코드</div>
+          <div class="code-block">a = int(input())
+b = int(input())
+c = int(input())
+if a >= b:
+    if a >= c:
+        print(a)
+    else:
+        print(c)
+else:
+    if b >= c:
+        print(b)
+    else:
+        print(c)</div>
+        </div>
+        <div>
+          <div class="code-result-label">입력</div>
+          <div class="input-block">-2
+5
+3</div>
+        </div>
+        <div>
+          <div class="code-result-label">결과</div>
+          <div class="result-block">5</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:#666;margin-top:.4rem">※ a와 b 중 큰 수를 먼저 찾고, 그 수와 c를 비교하여 최댓값 결정</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-header">
+        <div class="subsection-title">선택 구조 전체 비교</div>
+        <span class="sub-pages">pp.99–108</span>
+      </div>
+      <table>
+        <tr><th>구조</th><th>조건 True</th><th>조건 False</th><th>특징</th></tr>
+        <tr>
+          <td><code>if</code></td>
+          <td>블록 실행</td>
+          <td>건너뜀</td>
+          <td>조건 만족 시에만 추가 실행</td>
+        </tr>
+        <tr>
+          <td><code>if ~ else</code></td>
+          <td>if 블록 실행</td>
+          <td>else 블록 실행</td>
+          <td>둘 중 하나 반드시 실행</td>
+        </tr>
+        <tr>
+          <td><code>중첩 if</code></td>
+          <td colspan="2">조건을 단계적으로 좁혀가며 검사</td>
+          <td>여러 경우를 체계적으로 분기</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══ 확인 문제 ══ -->
+  <div class="quiz-section">
+    <div class="quiz-title">확인 문제</div>
+
+    <!-- Q1 개념 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 1 · 개념 확인</div>
+      <div class="quiz-q">파이썬의 선택 구조에 대한 설명으로 <u>옳지 않은</u> 것은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① if 조건식 끝에는 반드시 콜론(:)을 붙여야 한다.</div>
+        <div class="quiz-opt">② if ~ else 구조에서 조건식이 False이면 else 블록이 실행된다.</div>
+        <div class="quiz-opt">③ if 단독 구조에서 조건이 False이면 if 블록은 실행되지 않고 건너뛴다.</div>
+        <div class="quiz-opt">④ 파이썬에서 코드 블록은 중괄호({ })로 구분한다.</div>
+        <div class="quiz-opt">⑤ 선택 구조 안에 다른 선택 구조를 중첩하여 사용할 수 있다.</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q1')">정답 확인</button>
+      <div class="answer-box" id="q1">
+        <div class="ans-label">정답: ④</div>
+        <div class="ans-ref">교과서 p.99 참고</div>
+        파이썬에서 코드 블록은 중괄호({ })가 아닌 <strong>들여쓰기(indent)</strong>로 구분한다. 이것이 파이썬의 가장 큰 특징 중 하나이다.
+      </div>
+    </div>
+
+    <!-- Q2 개념 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 2 · 빈칸 완성</div>
+      <div class="quiz-q">빈칸 ㉠~㉢에 알맞은 말을 쓰시오.</div>
+      <div class="quiz-sub-text" style="line-height:1.9">
+        if ~ else 구조에서 조건식이 ( ㉠ )인 경우에는 if 블록이 실행되고, ( ㉡ )인 경우에는 else 블록이 실행된다. 두 블록 중 ( ㉢ )가 반드시 실행된다.
+      </div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>㉠: <input class="blank-input" placeholder="논릿값"></div>
+        <div>㉡: <input class="blank-input" placeholder="논릿값"></div>
+        <div>㉢: <input class="blank-input blank-input-wide" placeholder="빈칸"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q2')">정답 확인</button>
+      <div class="answer-box" id="q2">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.102 참고</div>
+        ㉠ <strong>True</strong> &nbsp; ㉡ <strong>False</strong> &nbsp; ㉢ <strong>하나(둘 중 하나)</strong><br>
+        if~else 구조는 조건이 True이든 False이든 반드시 어느 한 블록이 실행된다.
+      </div>
+    </div>
+
+    <!-- Q3 개념 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 3 · 개념 적용</div>
+      <div class="quiz-q">다음 중 <code>if ~ else</code> 구조를 사용해야 적절한 상황은?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt">① 입력값이 음수인 경우에만 양수로 바꾸어 출력하고 싶을 때</div>
+        <div class="quiz-opt">② 두 수를 입력받아 더 큰 수를 출력하고 작은 수는 무시할 때</div>
+        <div class="quiz-opt">③ 입력값이 짝수인지 홀수인지 판별하여 각각 다른 문자열을 출력할 때</div>
+        <div class="quiz-opt">④ 점수가 100 초과일 때만 100으로 고쳐 출력하고 싶을 때</div>
+        <div class="quiz-opt">⑤ 입력값이 0보다 클 때만 "양수"를 출력하고 나머지는 출력하지 않을 때</div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q3')">정답 확인</button>
+      <div class="answer-box" id="q3">
+        <div class="ans-label">정답: ③</div>
+        <div class="ans-ref">교과서 pp.102–103 참고</div>
+        if~else는 조건의 참·거짓 두 경우 모두 서로 <strong>다른 작업</strong>을 실행할 때 사용한다. ③번은 짝수일 때 "even", 홀수일 때 "odd"로 두 결과 중 하나를 반드시 출력해야 하므로 if~else가 적합하다.<br>
+        ①④⑤는 특정 조건에서만 추가 작업이 필요하므로 if 단독 구조가 더 적합하다.
+      </div>
+    </div>
+
+    <!-- Q4 코드 추적 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 4 · 코드 추적</div>
+      <div class="quiz-q">다음 코드에서 입력값이 각각 주어질 때 출력 결과를 쓰시오.</div>
+      <div class="quiz-sub">n = int(input())
+if n >= 0:
+    print(n * 2)
+if n < 0:
+    print(-n)</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>입력 <code>5</code>일 때 결과: <input class="blank-input" placeholder="결과"></div>
+        <div>입력 <code>-3</code>일 때 결과: <input class="blank-input" placeholder="결과"></div>
+        <div>입력 <code>0</code>일 때 결과: <input class="blank-input" placeholder="결과"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q4')">정답 확인</button>
+      <div class="answer-box" id="q4">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.99–101 참고</div>
+        입력 <code>5</code>: <strong>10</strong> — 5≥0이므로 5×2=10 출력, 5&lt;0은 False이므로 두 번째 블록 건너뜀<br>
+        입력 <code>-3</code>: <strong>3</strong> — -3≥0은 False이므로 건너뜀, -3&lt;0은 True이므로 -(-3)=3 출력<br>
+        입력 <code>0</code>: <strong>0</strong> — 0≥0은 True이므로 0×2=0 출력, 0&lt;0은 False이므로 건너뜀
+      </div>
+    </div>
+
+    <!-- Q5 코드 추적 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 5 · 코드 추적</div>
+      <div class="quiz-q">다음 코드에서 입력값이 각각 주어질 때 출력 결과를 쓰시오.</div>
+      <div class="quiz-sub">n = int(input())
+if n >= 80:
+    print("A")
+else:
+    if n >= 60:
+        print("B")
+    else:
+        print("C")</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>입력 <code>85</code>일 때 결과: <input class="blank-input" placeholder="결과"></div>
+        <div>입력 <code>65</code>일 때 결과: <input class="blank-input" placeholder="결과"></div>
+        <div>입력 <code>40</code>일 때 결과: <input class="blank-input" placeholder="결과"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q5')">정답 확인</button>
+      <div class="answer-box" id="q5">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.105–106 참고</div>
+        입력 <code>85</code>: <strong>A</strong> — 85≥80 True → A 출력<br>
+        입력 <code>65</code>: <strong>B</strong> — 65≥80 False → else 진입 → 65≥60 True → B 출력<br>
+        입력 <code>40</code>: <strong>C</strong> — 40≥80 False → else 진입 → 40≥60 False → else → C 출력
+      </div>
+    </div>
+
+    <!-- Q6 코드 추적 (중첩) -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 6 · 코드 추적 (세 수 비교)</div>
+      <div class="quiz-q">다음 코드에서 입력값이 순서대로 <code>4, 7, 2</code>일 때 출력 결과를 쓰고, 실행 흐름을 설명하시오.</div>
+      <div class="quiz-sub">a = int(input())
+b = int(input())
+c = int(input())
+if a >= b:
+    if a >= c:
+        print(a)
+    else:
+        print(c)
+else:
+    if b >= c:
+        print(b)
+    else:
+        print(c)</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>출력 결과: <input class="blank-input" placeholder="결과"></div>
+        <div style="margin-top:.5rem">실행 흐름: <input class="blank-input" style="min-width:300px" placeholder="예) a>=b → ... → 출력"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q6')">정답 확인</button>
+      <div class="answer-box" id="q6">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.107 참고</div>
+        출력 결과: <strong>7</strong><br>
+        실행 흐름: a=4, b=7, c=2 → a≥b(4≥7) False → else 진입 → b≥c(7≥2) True → b(7) 출력
+      </div>
+    </div>
+
+    <!-- Q7 응용 — 코드 완성 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 7 · 응용 — 코드 완성</div>
+      <div class="quiz-q">정수 n을 입력받아 양수이면 "positive", 음수이면 "negative", 0이면 "zero"를 출력하는 프로그램을 완성하시오.</div>
+      <div class="quiz-sub">n = int(input())
+if ㉠ :
+    print("positive")
+else:
+    if ㉡ :
+        print("negative")
+    else:
+        print("zero")</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>㉠: <input class="blank-input blank-input-wide" placeholder="조건식"></div>
+        <div>㉡: <input class="blank-input blank-input-wide" placeholder="조건식"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q7')">정답 확인</button>
+      <div class="answer-box" id="q7">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 pp.105–106 응용</div>
+        ㉠ <strong>n &gt; 0</strong> — n이 양수(0보다 큰)인 경우 "positive"<br>
+        ㉡ <strong>n &lt; 0</strong> — n이 음수인 경우 "negative", 나머지(n==0)는 else에서 "zero"<br><br>
+        검증: n=5 → ㉠ True → "positive" / n=-3 → ㉠ False → ㉡ True → "negative" / n=0 → ㉠ False → ㉡ False → "zero"
+      </div>
+    </div>
+
+    <!-- Q8 응용 — 오류 수정 -->
+    <div class="quiz-item">
+      <div class="quiz-num">문제 8 · 응용 — 오류 찾기</div>
+      <div class="quiz-q">다음 코드는 두 수 중 작은 값을 출력하려는 의도로 작성되었으나 오류가 있다. 잘못된 부분을 찾아 올바르게 수정하시오.</div>
+      <div class="quiz-sub">a = int(input())
+b = int(input())
+if a <= b
+    print(a)
+else:
+    print(b)</div>
+      <div class="quiz-inputs" style="margin-top:.75rem">
+        <div>오류 위치: <input class="blank-input blank-input-wide" placeholder="몇 번째 줄, 무엇이 잘못됐는지"></div>
+        <div>수정 내용: <input class="blank-input blank-input-wide" placeholder="올바른 코드"></div>
+      </div>
+      <button class="ans-btn" onclick="toggleAns('q8')">정답 확인</button>
+      <div class="answer-box" id="q8">
+        <div class="ans-label">정답</div>
+        <div class="ans-ref">교과서 p.99 참고</div>
+        오류 위치: <strong>3번째 줄 — <code>if a &lt;= b</code> 끝에 콜론(:)이 없음</strong><br>
+        수정 내용: <strong><code>if a &lt;= b:</code></strong><br><br>
+        파이썬에서 if, else, while, for 등의 제어 구조 끝에는 반드시 콜론(:)을 붙여야 한다.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>Ⅱ-3-①. 선택 구조 · 프로그래밍(파이썬) 학습자료</span>
+    <span>교과서 pp.99–108</span>
+  </div>
+</div>
+<script>
+function toggleAns(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('show');
+  const btn = box.previousElementSibling;
+  btn.textContent = box.classList.contains('show') ? '정답 닫기' : '정답 확인';
+}
+</script>
+</body>
+</html>
